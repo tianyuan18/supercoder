@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="879" height="356">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script> 
+		<![CDATA[ 
+			import com.danke8.swfpro.DSWF 
+			import com.danke8.swfpro.ptag.pprocess.pbitmap.T35DefineBitsJPEG3;
+			
+			import mx.controls.Alert;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private const _mapImageFilter:FileFilter = new FileFilter("SWF(*.swf)","*.swf");//文件定义
+			private var swfApp:DSWF;
+			//事件：点击文件选择按钮
+			protected function btnChooseP_clickHandler(event:MouseEvent):void{
+				
+				//选取分析文件路径
+				var fileP:File= new File("C:\\Documents and Settings\\kaitian\\桌面\\素材");
+				fileP.addEventListener(Event.SELECT,function(evt:Event):void{
+					
+					//显示路径
+					txtMapBGPathP.text = fileP.nativePath;
+					
+					//读取文件内容
+					var file:File=new File(fileP.nativePath);
+					var fs:FileStream=new FileStream();
+					var arr:ByteArray=new ByteArray();
+					fs.open(file, FileMode.READ);
+					fs.readBytes(arr);
+					fs.close();
+					
+					//分析文件内容
+					swfApp=DSWF.readSwf(arr);
+					txt.text="\r\n　　类型："+swfApp.type+
+					"　　版本："+swfApp.version+"\r\n\r\n"+
+					"　　文件长度："+(swfApp.len/1000)+"KB(未压缩前)\r\n\r\n"+
+					"　　显示大小：("+swfApp.rect.width+","+swfApp.rect.height+")\r\n\r\n"+
+					"　　帧频："+swfApp.frameFreq+
+					"　　帧数："+swfApp.frameCount+"\r\n\r\n"+
+					"　　标签数量："+swfApp.tags.length+"\r\n\r\n"+
+					"　　资源数量："+swfApp.cList.length+"\r\n\r\n"+
+					"　　帧数量："+swfApp.userList.length+"\r\n\r\n"+
+					"　　场景数量："+swfApp.scenesAndFLabels.scenes.length+"\r\n\r\n";
+					txt.text+="　　背景颜色：#"+swfApp.backgroundColor.color.toRGB16String()+"\r\n\r\n";
+					txt.text+="　　标签类型列表：\r\n";
+					for(var i:int=0;i<swfApp.tagTypeList.length;i++){
+						txt.text+=swfApp.tagTypeList[i] ;
+						if(i%4==0){
+							txt.text+="\r\n";
+						}else{
+							txt.text+="		";
+						}
+					}
+					if(swfApp.metadata!=null){
+						txt.text+="　　MateData："+swfApp.metadata.xml.toString()+"\r\n\r\n";
+					}
+					
+//					for(i=0;i<swfApp.cList.length;i++){
+//						if(swfApp.cList[i] is T35DefineBitsJPEG3){
+////							var item:T35DefineBitsJPEG3=swfApp.cList[i] as T35DefineBitsJPEG3;
+////							var img:File=new File(File.desktopDirectory.nativePath+"\\out\\"+i+".jpg");
+////							var fsImg:FileStream=new FileStream();
+////							fsImg.open(img,FileMode.WRITE);
+////							fsImg.writeBytes(item.imageData);
+////							fsImg.close();
+////							if(item.bmp!=null){
+////								xx2.addChild(item.bmp);
+////							}
+//						}
+//					}
+				});
+				fileP.browseForOpen("选择读取的swf文件",[_mapImageFilter]);
+			}
+			
+			protected function btnOut_clickHandler(event:MouseEvent):void
+			{
+				
+				
+				// TODO Auto-generated method stub
+				if(swfApp!=null){
+					var arr:Array=[];
+					var strArr:Array=txtArr.text.split(",");
+					for(var i:int=0;i<strArr.length;i++){
+						if(!isNaN(strArr[i])){
+							var index:int=parseInt(strArr[i]);
+							if(index>swfApp.frameCount-1){
+								Alert.show("超出帧数范围");
+								return;
+							}
+							arr.push(index);
+						}
+					}
+					
+					if(arr.length==0){
+						arr=null;
+					}
+					
+					
+					var file:File=new File(txtMapBGPathP.text.replace(".swf","副本.swf"));
+					var fs:FileStream=new FileStream();
+					fs.open(file, FileMode.WRITE);
+					fs.writeBytes(DSWF.writeSWF(swfApp,arr,chkH.selected));
+					fs.close();
+				}else{
+					Alert.show("文件数据不存在，无法生成");
+				}
+			}
+			
+			protected function rdoOld_clickHandler(event:MouseEvent):void
+			{
+				if(swfApp!=null && swfApp.userList!=null){
+					txtArr.text="";
+					for(var i:int;i<swfApp.userList.length;i++){
+						txtArr.text+=i;
+						if(i<swfApp.userList.length-1){
+							txtArr.text+=",";
+						}
+					}
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Scroller x="0" y="0" width="100%" height="100%">
+		<s:VGroup x="0" y="0" width="100%" height="100%">
+			<s:HGroup width="100%" height="10" paddingLeft="10" paddingTop="1">
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				<s:Label id="xx2" text="请选择flash文件：" height="21" paddingTop="5" width="100"/>
+				<mx:TextInput id="txtMapBGPathP" width="116" enabled="false"/>
+				<s:Button label="..." width="30" click="btnChooseP_clickHandler(event)"/>
+				<s:CheckBox id="chkH" label="水平翻转" selected="true"/>
+				<s:Button id="btnOut" label="生成swf" click="btnOut_clickHandler(event)"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="25" paddingLeft="10" paddingTop="1">
+				<s:Label paddingTop="5" text="转换模式"/>
+				<s:RadioButton id="rdoOld" label="原始" click="rdoOld_clickHandler(event)"/>
+				<s:RadioButton label="角色"/>
+				<s:RadioButton label="武器"/>
+				<s:RadioButton label="坐骑"/>
+				<s:RadioButton label="Npc"/>
+				<s:RadioButton label="怪物"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="111" paddingLeft="10" paddingTop="1">
+				<s:TextArea width="98%" id="txtArr" height="100%"/>
+			</s:HGroup>
+			<s:Label id="txt"/>
+		</s:VGroup>
+	</s:Scroller>
+</s:WindowedApplication>

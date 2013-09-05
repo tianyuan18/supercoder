@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command
+END
+ReceiveMasterCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/ReceiveMasterCommand.as
+END
+AgreementStudentrCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/AgreementStudentrCommand.as
+END
+AskStudentGraduateCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/AskStudentGraduateCommand.as
+END
+BetrayMasterCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/BetrayMasterCommand.as
+END
+AgreementMasterCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/AgreementMasterCommand.as
+END
+BottomButtonController.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/BottomButtonController.as
+END
+RavelMasterCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/RavelMasterCommand.as
+END
+GraduateBottomController.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/GraduateBottomController.as
+END
+GotoMasterSideCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/GotoMasterSideCommand.as
+END
+TutorGraduateCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/TutorGraduateCommand.as
+END
+AskStudentGoCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/AskStudentGoCommand.as
+END
+ReLeaseMasterCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/ReLeaseMasterCommand.as
+END
+AnalysisMasterRelationCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Command/AnalysisMasterRelationCommand.as
+END

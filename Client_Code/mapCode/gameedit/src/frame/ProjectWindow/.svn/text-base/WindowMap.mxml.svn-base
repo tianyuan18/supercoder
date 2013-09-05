@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameContainerWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:control="control.*" layout="absolute" 
+					width="100%" height="100%" title="地图"
+					creationComplete="gamewindow1_creationCompleteHandler(event)"
+					xmlns:ViewWindow="frame.ViewWindow.*">
+<fx:Script>
+	<![CDATA[
+		import common.App;
+		
+		import control.BGPanel;
+		import control.GridPanel;
+		import control.MapItemPanel;
+		import control.RoadPanel;
+		
+		import event.EventData;
+		
+		import frame.MapWindow.WindowMapInfo;
+		import frame.MapWindow.WindowMapMouseInfo;
+		import frame.MapWindow.WindowMapItemInfo;
+		import frame.MapWindow.WindowMapRoadOperate;
+		
+		import model.EditType;
+		import model.MapState;
+		
+		import modelExtend.MapExtend;
+		
+		import mx.events.FlexEvent;
+		
+		import spark.components.HGroup;
+		
+		private static var _windowMap:WindowMap;
+		
+		[Bindable]
+		public var _loadOperate:String="";//路点操作
+		[Bindable]
+		public var _drawType:String=EditType.SPOINT;
+		//地图信息栏
+		private var _mapInfo:WindowMapInfo=new WindowMapInfo();		
+		//鼠标信息栏
+		private var _mapMouseInfo:WindowMapMouseInfo=new WindowMapMouseInfo();	
+		//路点操作栏
+		private var _roadOperateBar:WindowMapRoadOperate=new WindowMapRoadOperate();
+		//地图物品栏
+		private var _mapItemBar:WindowMapItemInfo=new WindowMapItemInfo();
+		
+		private var _bgPanel:BGPanel=new BGPanel();//地图背景层
+		private var _gridPanel:GridPanel=new GridPanel();		//网格层
+		private var _roadPanel:RoadPanel;		//路点层
+		private var _mapNpcPanel:MapItemPanel=new MapItemPanel();
+		 
+		public static function open():WindowMap{
+			
+			if(_windowMap==null){
+				_windowMap=new WindowMap();
+			}else if(_windowMap.parent!=null){
+				_windowMap.show();
+			}
+			return _windowMap;
+		}
+		
+		private function get _map():MapExtend{
+			
+			if(App.proCurrernt!=null && App.proCurrernt.MapCurrent!=null){
+				return App.proCurrernt.MapCurrent;
+			}else{
+				this.hide();
+				return null;
+			}
+		}
+
+		//初始化
+		protected function gamewindow1_creationCompleteHandler(event:FlexEvent):void{
+			
+			_roadPanel=new RoadPanel(this)
+			_mapNpcPanel.windowMap=this;
+			_roadOperateBar.windowMap=this;
+			
+			this.removeChild(titleBarContainer);
+			this.titleBar.addChild(titleBarContainer);
+			
+			elementContainer.addElement(_mapInfo);
+			elementContainer.addElement(_mapMouseInfo);
+			elementContainer.addElement(_roadOperateBar);
+			elementContainer.addElement(_mapItemBar);
+			
+			var _progress:progressBarUI = progressBarUI.open();
+			_progress.x = 600;
+			_progress.y = 400;
+			_progress.visible = false;
+			elementContainer.addElement(_progress);
+			
+			moveChildContainer.addChild(_bgPanel);
+			moveChildContainer.addChild(_gridPanel);
+			moveChildContainer.addChild(_roadPanel);
+			moveChildContainer.addChild(_mapNpcPanel);
+			
+			mapItemBar.addEventListener(WindowMapItemInfo.CHOOSENPCINFO,onMapItemSelected);
+			moveChildContainer.addEventListener(MouseEvent.MOUSE_MOVE,_mapMouseInfo.tmpLabel_mouseMoveHandler);
+		}
+		
+		private function onMapItemSelected(evt:EventData):void{
+			var data:Object=evt.data;
+			var x:int=data.@x.toString();
+			var y:int=data.@y.toString();
+
+			
+			if(x<this.width/2){
+				x=0;
+			}else if(x>_map.mapWidth-this.width/2){
+				x=_map.mapWidth-this.width/2;
+			}else{
+				x-=this.width/2;
+			}
+			
+			if(y<this.height/2){
+				y=0;
+			}else if(x>_map.mapHeight-this.height/2){
+				y=_map.mapHeight-this.height/2;
+			}else{
+				y-=this.height/2;
+			}
+			
+			scrollTo(new Point(x,y));
+			
+			_mapNpcPanel.SelectNpc(parseInt(data.id.toString()));
+		}
+		 
+		//重写：显示
+		public override function show():void{
+			 
+			
+			if(_map!=null){
+				moveChildContainer.width=_map.mapWidth;
+				moveChildContainer.height=_map.mapHeight;
+				_bgPanel.loadBG();
+				_gridPanel.drawGrid(_map.cellCol,_map.cellRow,_map.cellWidth,_map.cellHeight);
+				_roadPanel.drawLoad();
+				
+				setState(MapState.NONE);
+				super.show();
+			}
+		}
+		
+		//设置状态
+		public function setState(state:MapState):void{
+			
+			if(_map!=null){
+				_map. mapState=state;
+				
+				if(state==MapState.NONE){
+					//无状态
+					hideAll();
+					_bgPanel.show();
+					_mapMouseInfo.showXY(1055,45);
+					_mapNpcPanel.show();
+				
+				}else if(state==MapState.NPCSET){
+					//设置npc
+					hideAll();
+					_bgPanel.show();
+					_mapMouseInfo.show();
+					_gridPanel.show();
+					_roadPanel.show();
+					_mapItemBar.showXY(15,45);
+					_mapNpcPanel.show();
+				
+				}else if(state==MapState.OUTPUT){
+					//导出数据
+					hideAll();
+					_bgPanel.show();
+					_mapInfo.showXY(375,255);
+				
+				}else if(state==MapState.ROADSET){
+					//设置路点
+					hideAll();
+					_bgPanel.show();
+					_mapMouseInfo.showXY(1055,45);
+					_gridPanel.show();
+					_roadPanel.show();
+					_roadOperateBar.showXY(15,45);
+				}
+			}else{
+				hideAll();
+			}
+		}
+		
+		//隐藏所有
+		public function hideAll():void{
+			
+			_bgPanel.hide();
+			_mapMouseInfo.hide();
+			_mapInfo.hide();
+			_gridPanel.hide();
+			_roadPanel.hide();
+			_roadOperateBar.hide();
+			_mapItemBar.hide();
+			_mapNpcPanel.hide();
+		}
+
+		public function get mapItemBar():WindowMapItemInfo
+		{
+			return _mapItemBar;
+		}
+
+	]]>
+		
+</fx:Script>
+	<s:HGroup id="titleBarContainer" width="100%" height="29" paddingLeft="60" paddingTop="6">
+		<s:Button label="无操作" click="setState(MapState.NONE)"/>
+		<s:Button label="Npc设置" click="setState(MapState.NPCSET)"/>
+		<s:Button label="设置路点" click="setState(MapState.ROADSET)"/>
+		<s:Button label="导出数据" click="setState(MapState.OUTPUT)"/>
+	</s:HGroup>
+</control:GameContainerWindow>

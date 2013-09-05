@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Friend/view/ui
+END
+UIEnemyContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/UIEnemyContainer.as
+END
+UINewTempContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Friend/view/ui/UINewTempContainer.as
+END
+UINewFriendContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Friend/view/ui/UINewFriendContainer.as
+END
+MenuItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1444/Game/GameUI/Modules/Friend/view/ui/MenuItem.as
+END
+MenuItemCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/684/Game/GameUI/Modules/Friend/view/ui/MenuItemCell.as
+END
+UINewBlackListContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Friend/view/ui/UINewBlackListContainer.as
+END
+FriendGroup.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/FriendGroup.as
+END
+UIFriendsList.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/UIFriendsList.as
+END
+UINewEnemyContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Friend/view/ui/UINewEnemyContainer.as
+END
+UINewSysMsgContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1439/Game/GameUI/Modules/Friend/view/ui/UINewSysMsgContainer.as
+END
+UIPlayerInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/UIPlayerInfo.as
+END
+FriendChatCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/FriendChatCell.as
+END
+UIEnemyList.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/UIEnemyList.as
+END
+UIFriendContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/UIFriendContainer.as
+END
+ChatInfoPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/ChatInfoPanel.as
+END
+ChatList.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/ui/ChatList.as
+END

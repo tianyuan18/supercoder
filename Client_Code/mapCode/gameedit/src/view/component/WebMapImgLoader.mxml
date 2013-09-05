@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="320" height="300" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private var _file:File=File.applicationDirectory;	
+			private var arr:Array=new Array;
+			private var mapIndex:int=0;
+			private var imgLoder:Loader=new Loader();
+			private var savePathTmpStr:String;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				txtProPath.text=File.applicationDirectory .nativePath+"\\loaded\\";
+				txtAddress.text="http://pmxy.app.3304399.net/res/map_50/(map)/(y)/(map)_(y)_(x).jpg";
+				
+				imgLoder.contentLoaderInfo.addEventListener(Event.COMPLETE,onLoaded);
+				imgLoder.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,onError);
+			}
+			
+			public function onError(evt:IOErrorEvent):void{
+				if(arr.length==0){
+					//trace("开始第0行");
+					txtMsg.text="开始加载地图"+mapIndex;
+					for(var i:int=0;i<40;i++){
+						arr.push({y:0,x:i});
+					}
+					onLoaded(null);
+				}else{
+					var tmpY:int=arr[0].y+1;
+					if(arr[0].x==0){
+						//trace("地图"+mapIndex+"加载完毕");
+						var mapMax:int=parseInt(txtEnd.text);
+						if(mapIndex<mapMax){
+							mapIndex++;
+							arr.splice(0,arr.length);
+							onError(null);
+						}else{
+							Alert.show("全部加载完毕，完成了O(∩_∩)O哈哈~");
+							txtMsg.text="加载完毕";
+							//trace("全部加载完毕，完成了O(∩_∩)O哈哈~");
+						}
+						
+					}else{
+						//trace("开始第"+tmpY+"行");
+						arr.splice(0,arr.length);
+						for(var i2:int=0;i2<40;i2++){
+							arr.push({y:tmpY,x:i2});
+						}
+						onLoaded(null);
+					}
+				}
+			}
+			
+			public function onLoaded(evt:Event):void{
+				
+				if(evt!=null){
+					
+					var bmp:BitmapData=(evt.target as  LoaderInfo).content["bitmapData"] as BitmapData;
+					var recs:Rectangle=new Rectangle(0,0,bmp.width,bmp.height);
+					
+					//JPEG编码矩形区域的bytes数组 or PNGEncoder 品质100
+					//var pngEncoder:PNGEncoder=new PNGEncoder();
+					var jpgEncoderS:JPEGEncoder=new JPEGEncoder(100);
+					var bytespixelsS:ByteArray=bmp.getPixels(recs)
+					var bytesS:ByteArray=jpgEncoderS.encodeByteArray(bytespixelsS,bmp.width,bmp.height);
+					
+					//写入到本地文档HFMapEdit/文件夹中
+					var fsS:FileStream = new FileStream();
+					var fileS:File = new File(savePathTmpStr+mapIndex+"\\"+arr[0].y+"_"+arr[0].x+".jpg");
+					fsS.openAsync(fileS,FileMode.WRITE);
+					fsS.writeBytes(bytesS);
+					fsS.close();
+					arr.shift();
+				}
+				
+				var loadImgStr:String=txtAddress.text.replace(/\(map\)/g,mapIndex.toString()).replace(/[(]y[)]/g,arr[0].y.toString()).replace(/[(]x[)]/g,arr[0].x.toString());
+				imgLoder.load(new URLRequest(loadImgStr));
+			}
+			
+			//事件：点击项目目录选择按钮
+			protected function btnChoose_clickHandler(event:MouseEvent):void{
+				_file.browseForDirectory("选择项目保存路径");
+				_file.addEventListener(Event.SELECT,fileSelectHanlder);
+			}
+			
+			//事件：项目目录选择完毕
+			private function fileSelectHanlder(evet:Event):void{
+				txtProPath.text= _file.nativePath;
+			}
+			
+			protected function btnStart_clickHandler(event:MouseEvent):void
+			{
+				if(arr.length>0){
+					arr.splice(0,arr.length);
+				}
+				mapIndex=parseInt(txtStart.text);
+				savePathTmpStr=txtProPath.text+txtName.text+"\\";
+				onError(null);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:VGroup x="0" y="0" width="100%" height="100%">
+		<s:HGroup width="100%" height="30" paddingTop="3">
+			<s:Label paddingLeft="5" paddingTop="5" text="游戏名："/>
+			<s:TextInput id="txtName" width="240" text="飘渺西游"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="30" paddingTop="3">
+			<s:Label paddingLeft="5" paddingTop="5" text="地址格式："/>
+			<s:TextInput id="txtAddress" width="240"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="30" paddingTop="3">
+			<s:Label paddingLeft="5" paddingTop="5" text="地图起始："/>
+			<s:TextInput id="txtStart" width="81" text="1"/>
+			<s:Label paddingLeft="5" paddingTop="5" text="地图终止："/>
+			<s:TextInput id="txtEnd" width="81"  text="18"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="30" paddingTop="3">
+			<s:Label paddingLeft="5" paddingTop="5" text="保存目录："/>
+			<mx:TextInput id="txtProPath" width="205"/>
+			<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="30" horizontalAlign="right" paddingRight="9" paddingTop="3">
+			<s:Label id="txtMsg" x="17" width="218" paddingLeft="5" paddingTop="5"/>
+			<s:Button id="btnStart" label="开始" click="btnStart_clickHandler(event)"/>
+		</s:HGroup>
+		
+	</s:VGroup>
+</s:Group>

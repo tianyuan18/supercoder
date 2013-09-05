@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx"
+						xmlns:control="control.*" layout="absolute"
+						width="150" height="102" title="鼠标信息" alpha="0.8"
+						>
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.MapUtils;
+			
+			import modelExtend.MapExtend;
+			
+			import mx.events.FlexEvent;
+			 
+			private function get _map():MapExtend{
+				if(App.proCurrernt!=null && App.proCurrernt.MapCurrent!=null){
+					return App.proCurrernt.MapCurrent;
+				}
+				else{
+					this.hide();
+					return null;
+				}
+			}
+			
+			
+			//设置鼠标信息
+			public function setXY(px:int,py:int,gx:int,gy:int,dx:int,dy:int):void{
+				txtPx.text=px.toString();
+				txtPy.text=py.toString();
+				txtGx.text=gx.toString();
+				txtGy.text=gy.toString();
+				txtDx.text=dx.toString();
+				txtDy.text=dy.toString();
+			}
+ 
+			public function tmpLabel_mouseMoveHandler(e:MouseEvent):void{
+				if(_map!=null){
+					var p:Point=MapUtils.getCellPoint(e.localX,e.localY);
+					var dP:Point=MapUtils.getDirectPoint(p,_map.cellRow);
+					setXY(e.localX,e.localY,p.x,p.y,dP.x,dP.y);
+				}
+				 
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup  width="100%" height="100%">
+		<s:HGroup width="100%" height="17" paddingTop="3">
+			<s:Label text="像素  X:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtPx" text="" paddingTop="3" width="30"/>
+			<s:Label text=" Y:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtPy" text="" paddingTop="3" width="30"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="17" paddingTop="-3">
+			<s:Label text="网格  X:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtGx" text="" paddingTop="3" width="30"/>
+			<s:Label text=" Y:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtGy" text="" paddingTop="3" width="30"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="17" paddingTop="-6">
+			<s:Label text="数组  X:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtDx" text="" paddingTop="3" width="30"/>
+			<s:Label text=" Y:" paddingTop="3" paddingLeft="5"/>
+			<s:Label id="txtDy" text="" paddingTop="3" width="30"/>
+		</s:HGroup>
+	</s:VGroup>
+	
+</control:GameMoveWindow>

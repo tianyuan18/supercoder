@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View
+END
+ReadingBar.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/ReadingBar.as
+END
+ManufactoryResource.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/ManufactoryResource.as
+END
+ManufatoryView.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/ManufatoryView.as
+END
+EquipCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/EquipCell.as
+END
+AppendMaterialCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/AppendMaterialCell.as
+END
+BaseMaterialCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Manufactory/View/BaseMaterialCell.as
+END

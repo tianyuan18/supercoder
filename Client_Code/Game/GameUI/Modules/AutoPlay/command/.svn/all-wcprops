@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Client_Code/!svn/ver/1587/Game/GameUI/Modules/AutoPlay/command
+END
+AutoPlayCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/AutoPlay/command/AutoPlayCommand.as
+END
+AutoEatDragCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1587/Game/GameUI/Modules/AutoPlay/command/AutoEatDragCommand.as
+END
+AutoPlayItemsCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/936/Game/GameUI/Modules/AutoPlay/command/AutoPlayItemsCommand.as
+END
+AutoPlayTeamCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/AutoPlay/command/AutoPlayTeamCommand.as
+END
+AutoPlayPetCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/AutoPlay/command/AutoPlayPetCommand.as
+END
+AutoPlayEventList.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/936/Game/GameUI/Modules/AutoPlay/command/AutoPlayEventList.as
+END

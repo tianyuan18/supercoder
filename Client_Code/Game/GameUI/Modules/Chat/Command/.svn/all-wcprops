@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Client_Code/!svn/ver/215/Game/GameUI/Modules/Chat/Command
+END
+ReceiveChatCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/215/Game/GameUI/Modules/Chat/Command/ReceiveChatCommand.as
+END
+SendCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/Command/SendCommand.as
+END
+SendBigLeoCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/Command/SendBigLeoCommand.as
+END
+HeadTalkCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/Command/HeadTalkCommand.as
+END

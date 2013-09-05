@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/181/OopsFramework/OopsFramework/Content/Provider
+END
+ResourceProvider.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/Content/Provider/ResourceProvider.as
+END
+BulkLoaderResourceProvider.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/Client_Code/!svn/ver/181/OopsFramework/OopsFramework/Content/Provider/BulkLoaderResourceProvider.as
+END
+IResourceProvider.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/Content/Provider/IResourceProvider.as
+END

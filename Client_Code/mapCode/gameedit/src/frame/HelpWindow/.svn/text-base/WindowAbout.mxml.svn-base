@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="关于" alphaEnable="false"
+		 xmlns:s="library://ns.adobe.com/flex/spark"  xmlns:c="control.*"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 creationComplete="gamemovewindow1_creationCompleteHandler(event)"
+		 width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private static var _windowAbout:WindowAbout;
+			
+			[Embed(source="images/egg.png")]
+			public var ImgAbout:Class;
+			
+			public static function Open():WindowAbout{
+				if(_windowAbout==null){
+					_windowAbout=new WindowAbout();	
+				}
+				else if(_windowAbout.parent!=null){
+					_windowAbout.show();
+				}
+				return _windowAbout;
+			}
+			
+			protected function gamemovewindow1_creationCompleteHandler(event:FlexEvent):void{
+				lblContainer.addChild(new ImgAbout());
+			}
+
+		]]>
+	</fx:Script>
+	<s:Group width="100%" height="100%">
+		<s:Label id="lblContainer" x="27" y="28" width="303" height="193"/>
+		<s:Label x="27" y="229" text="蛋壳编辑器 0.0.0.1" width="303"/>
+	</s:Group>
+	
+	
+</c:GameMoveWindow>

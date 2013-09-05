@@ -1,0 +1,341 @@
+ package 
+{
+	import ContextMenu.Manager.ContextMenuManager;
+	
+	import CreateRole.Login.StartMediator.ChoiceRoleMediator;
+	import CreateRole.Login.StartMediator.CreateRoleMediator;
+	import CreateRole.Login.StartMediator.SimpleCreateRoleMediator;
+	
+	import Data.GameLoaderData;
+	
+	import Net.AccNetInl;
+	import Net.ActionProcessor.GameServerInfoInl;
+	
+	import Resource.ChoiceRoleLoader;
+	import Resource.CreateRoleLoader;
+	import Resource.ResLoader;
+	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Loader;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.ProgressEvent;
+	import flash.events.TextEvent;
+	import flash.external.ExternalInterface;
+	import flash.geom.Rectangle;
+	import flash.system.Security;
+	import flash.text.TextField;
+	import flash.utils.getTimer;
+
+	[SWF(backgroundColor="#000000",width="1024",height="768")]  
+	public class GameLoader extends Sprite
+	{
+		private var GameUrl:String;
+		private var info:Object       		 = null;
+		private var loadBackGround:MovieClip = null; 						//大背景
+		private var scale_tiao:MovieClip 	 = null;							//登陆提示面板
+		
+		private var resLoader:ResLoader;
+		private var roleResLoader:CreateRoleLoader;
+		private var choiceRoleLoader:ChoiceRoleLoader;
+		
+		private var bytesTotal    	    : int = 0;			// 下载字段总数
+        private var bytesLoaded    	    : int = 0;			// 下载字段
+        private var bytesRemaining 	    : int = 10000000;	// 剩余下载量
+        private var percentLoaded  	    : Number;			// 加载的百分比进行（从0到1）。
+        private var totalTime      	    : int;					
+        private var timeToDownload 	    : Number;
+        private var weight		 	    : int = 1;
+        private var speed 		 	    : Number;
+        private var timeOutId:int;
+        private var loaderItems:uint = 0;								//加载的资源次数
+        private var aResourceURL:Array = [];	
+        public static var createRole:CreateRoleMediator	
+//        public static var createRole:SimpleCreateRoleMediator;	
+        public static var choiceRole:ChoiceRoleMediator;
+		
+		
+		public function GameLoader()
+		{
+			Security.allowDomain("*");
+			this.stage.align     = StageAlign.TOP_LEFT;
+			this.stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			this.stage.showDefaultContextMenu = false;							// 删除默认右键菜单
+			this.stage.addEventListener( KeyboardEvent.KEY_DOWN,onKeyDown );		// 老板键
+			this.stage.addEventListener(Event.RESIZE,windowResizeEvent);
+			GameLoaderData.loaderStage = this.stage;
+			
+			receiveParaFormWeb();
+			initUI();
+            
+			GameLoaderData.gameServerInfo = new GameServerInfoInl();
+			GameLoaderData.gameServerInfo.nextStep = nextStep;
+			GameLoaderData.gameServerInfo.noRoleHandler = noRoleHandler;
+			GameLoaderData.gameServerInfo.choiceRoleHandler = choiceRoleHandler;
+			GameLoaderData.gameServerInfo.connectServer = connectServer;
+			connectServer();
+			
+//			localTest();
+		}
+		private function windowResizeEvent(e:Event = null):void{
+			var scaleRec:Rectangle;
+			if(this.scale_tiao.parent){
+				scaleRec = scale_tiao.getRect(scale_tiao);
+				scale_tiao.x = (this.stage.stageWidth - (scale_tiao.width+scaleRec.x))/2;
+			}else if(createRole){
+				createRole.setCenter();
+			}
+			
+			if(GameLoaderData.TipMC && GameLoaderData.TipMC.parent){
+				GameLoaderData.TipMC.x = (this.stage.stageWidth - GameLoaderData.TipMC.width) / 2;
+			}
+		}
+		
+		//连接游戏服务器
+		private function connectServer():void
+		{
+			Security.loadPolicyFile("xmlsocket://" + GameLoaderData.outsideDataObj.AccSocketIP+ ":843");
+			trace(GameLoaderData.outsideDataObj.AccSocketIP);
+			GameLoaderData.outsideDataObj.AccNets = new AccNetInl( GameLoaderData.outsideDataObj.AccSocketIP, GameLoaderData.outsideDataObj.AccSocketPort );
+		}
+		
+		private function reConnect():void {
+			clearSomething();
+			initUI();
+			Security.loadPolicyFile("xmlsocket://" + GameLoaderData.outsideDataObj.AccSocketIP+ ":843");
+			trace(GameLoaderData.outsideDataObj.AccSocketIP);
+			GameLoaderData.outsideDataObj.AccNets = new AccNetInl( GameLoaderData.outsideDataObj.AccSocketIP, GameLoaderData.outsideDataObj.AccSocketPort );
+			
+		}
+		
+		//获取网页数据
+		private function receiveParaFormWeb():void
+		{
+			GameLoaderData.outsideDataObj.userName = this.loaderInfo.parameters["username"];															// 账号
+			GameLoaderData.outsideDataObj.password = this.loaderInfo.parameters["4399uid"];															// 密码
+			GameLoaderData.outsideDataObj.serverid = this.loaderInfo.parameters["serverid"];															// 服务器编号s1,s2
+			
+			GameLoaderData.outsideDataObj.AccSocketIP      = this.loaderInfo.parameters["AccSocketIP"];												// 账号服务器地址
+			GameLoaderData.outsideDataObj.AccSocketPort   = this.loaderInfo.parameters["AccSocketPort"];												// 账号服务器端口
+			GameLoaderData.outsideDataObj.SourceURL       = this.loaderInfo.parameters["SourceURL"];													// 游戏服务器
+			GameLoaderData.outsideDataObj.cztype          = this.loaderInfo.parameters["cztype"];													// 是否显示充值开关（0为关,1为开）
+			GameLoaderData.outsideDataObj.preventWallowTime = this.loaderInfo.parameters["preventWallowTime"];				//防沉迷定时器
+			GameLoaderData.outsideDataObj.showAccount = this.loaderInfo.parameters["showAccount"];				//防沉迷弹出次数
+			GameLoaderData.outsideDataObj.fcmPower = this.loaderInfo.parameters["fcmPower"];				//平台防沉迷开关 1 开启  0 关闭  
+			GameLoaderData.outsideDataObj.fcmConfig = this.loaderInfo.parameters["fcmConfig"];				//单个用户防沉迷开关 0 没通过，要弹窗  1 已经通过，不弹  
+//			GameLoaderData.outsideDataObj.isNew = this.loaderInfo.parameters["isNew"];				//单个用户防沉迷开关 0 没通过，要弹窗  1 已经通过，不弹  
+//			GameLoaderData.outsideDataObj.IsTransferScene = this.loaderInfo.parameters["IsTransferScene"];						// for 孔亮 
+//			GameLoaderData.outsideDataObj.openTreasureStragety = this.loaderInfo.parameters["openTreasureStragety"];						// 开箱子策略 1正常2开放包裹3未开放
+//			GameLoaderData.outsideDataObj.isUpdataVersion = this.loaderInfo.parameters["isUpdataVersion"];					//传1为更新版本 
+//			GameLoaderData.outsideDataObj.language = this.loaderInfo.parameters["language"];                                          //传2为台湾版本
+//			GameLoaderData.outsideDataObj.loadNoticeWay = this.loaderInfo.parameters[ "loadNoticeWay" ];
+//			GameLoaderData.outsideDataObj.hideLines = this.loaderInfo.parameters[ "hideLines" ];
+//			\th
+
+			
+			
+			//////////////////测试代码
+			//testLoader();
+			/////////////////////
+			
+			if ( GameLoaderData.outsideDataObj.language == 2 )
+			{
+				GameLoaderData.wordCode = "big5";
+			}
+			else
+			{
+				GameLoaderData.wordCode = "ANSI";
+			}
+			
+		}
+		
+		//////////////////测试代码
+		private function testLoader():void
+		{
+			GameLoaderData.outsideDataObj.AccSocketIP  = "192.168.0.200";
+			GameLoaderData.outsideDataObj.AccSocketPort = 8846;
+			GameLoaderData.outsideDataObj.userName = "stlyou8";
+			GameLoaderData.outsideDataObj.password = "123456";   
+			GameLoaderData.outsideDataObj.SourceURL    = "E:/workspaces/";
+		}
+		
+		private function localTest():void
+		{
+			var txt:TextField = new TextField();
+			txt.textColor     = 0x00ff00;
+			txt.x 			  = 0;
+			txt.autoSize 	  = "left";
+			txt.width 		  = 80;
+			this.addChild( txt );
+			txt.text = "账号服："+GameLoaderData.outsideDataObj.AccSocketIP+"\n资源地址："+GameLoaderData.outsideDataObj.SourceURL+"\n账号服端口："+GameLoaderData.outsideDataObj.AccSocketPort;
+		}
+		
+		private function startLoad():void
+		{
+			resLoader = new ResLoader();
+			resLoader.allDoneHandler = allDoneHandler;
+		}
+		
+		
+		private function initUI():void
+		{
+			
+			scale_tiao = new ScaleTiao();
+			scale_tiao.total_mc.gotoAndStop(1);
+			scale_tiao.item_mc.gotoAndStop(1);
+			this.addChild(scale_tiao);
+			//如果语言没传，则默认为1 简体，2繁体
+			if ( !GameLoaderData.outsideDataObj.language ) GameLoaderData.outsideDataObj.language = 1;
+
+			this.GameUrl = GameLoaderData.outsideDataObj.SourceURL + "LoadInterface.swf";
+
+			GameLoaderData.outsideDataObj.tiao         = scale_tiao;
+			
+			var swfver:String = this.loaderInfo.parameters["swfver"];
+			GameLoaderData.outsideDataObj.version = "?v=" + swfver;
+			if(swfver != null)
+			{	
+				this.GameUrl += GameLoaderData.outsideDataObj.version.toString();
+			}
+			GameLoaderData.GameUrl = this.GameUrl;
+			
+			GameLoaderData.outsideDataObj.tiao.reload_txt.addEventListener(TextEvent.LINK,reLoadPage);
+			windowResizeEvent();
+		}
+		
+		//连接上服务器之后的下一步
+		private function nextStep():void
+		{
+			if ( !this.contains( scale_tiao ) )
+			{
+				addChild( scale_tiao );
+			}
+			startLoad();
+		}
+		
+		//资源全部加载完成
+		private function allDoneHandler( _loader:Loader ):void
+		{
+			if (_loader.contentLoaderInfo.applicationDomain.hasDefinition("LoadInterface"))
+            {
+            	clearSomething();
+				GameLoaderData.outsideDataObj.GameNets.removeListener(); 
+				GameLoaderData.outsideDataObj.isOpenSoundSwitch = GameLoaderData.isOpenSoundSwitch;
+            	var GameClass:Class = _loader.contentLoaderInfo.applicationDomain.getDefinition("LoadInterface") as Class;
+				var Game:* 		    = new GameClass();
+				Game.Run(this, GameLoaderData.outsideDataObj);
+				ContextMenuManager.getInstance().init(this, Game.HelpFun,Game.MenuVersion, "...");
+            }
+            _loader = null;
+            resLoader = null; 
+		}
+		
+		//开始创建角色
+		private function noRoleHandler():void
+		{
+			roleResLoader = new CreateRoleLoader();
+			roleResLoader.roleResComplete = roleResComplete;
+		}
+		
+		//创建角色资源加载完成
+		private function roleResComplete():void
+		{
+			createRole = new CreateRoleMediator(); 
+//			createRole = new SimpleCreateRoleMediator(); 
+			createRole.enterGame = nextStep;
+			createRole.reConnect = reConnect;
+			if ( this.contains( scale_tiao ) )
+			{
+				removeChild( scale_tiao );
+			}
+			
+			createRole.showCreateRole();
+		}
+		
+		//开始选择角色
+		private function choiceRoleHandler():void
+		{
+			this.choiceRoleLoader = new ChoiceRoleLoader();
+			choiceRoleLoader.loadRolesComplete = loadRolesComplete;
+		}
+		
+		//选择角色资源加载完成
+		private function loadRolesComplete():void
+		{
+//			createRole = new CreateRoleMediatorYl(); 
+			choiceRole = new ChoiceRoleMediator(); 
+			choiceRole.enterGame = nextStep;
+			
+			if ( this.contains( scale_tiao ) )
+			{
+				removeChild( scale_tiao );
+			}
+			choiceRole.showCreateRole();
+		}
+        
+		private  function TruncateNumber(raw:Number, decimals:int=2):Number 
+        {
+            var power:int = Math.pow(10, decimals);
+            return Math.round(raw * ( power )) / power;
+        }
+        
+        private function reLoadPage(evt:TextEvent):void
+        {
+        	if(evt.text.split("_")[0] == "reload")
+        	{
+        		ExternalInterface.call("function refresh(){window.location.reload();}");
+        	}
+        }
+        
+        private function onKeyDown(evt:KeyboardEvent):void
+        {
+        	if(evt.keyCode == 90 && !(this.stage.focus is TextField) ) 
+			{
+				ExternalInterface.call( "showGoogle",evt.keyCode );
+			}
+        }
+        
+        //清空一些数据
+        private function clearSomething():void
+        {
+			GameLoaderData.CreateRoleMC = null;
+			GameLoaderData.AlertViewMC = null;
+			GameLoaderData.LoadCircleMC = null;
+			GameLoaderData.ChoiceRoleMC = null;
+			GameLoaderData.TipMC = null;
+			GameLoaderData.SingleRoleInfoArr = null;
+			GameLoaderData.left = null;
+			GameLoaderData.right = null;
+			GameLoaderData.title = null;
+			GameLoaderData.faceNumArr = null;
+			GameLoaderData.faceArr = null;
+			
+//			GameLoaderData.gameServerInfo = null;
+			if(stage.hasEventListener(Event.RESIZE)){
+				stage.removeEventListener(Event.RESIZE,windowResizeEvent);
+			}
+			
+			callJs( "loadgame" );
+        }
+        
+        private function callJs( _name:String ):void
+        {
+        	try
+			{
+				ExternalInterface.call( _name );
+			}
+			catch ( e:Error )
+			{
+				
+			}
+        }
+        
+	}
+}
+

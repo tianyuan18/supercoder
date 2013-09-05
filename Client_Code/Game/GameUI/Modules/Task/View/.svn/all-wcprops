@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Client_Code/!svn/ver/1597/Game/GameUI/Modules/Task/View
+END
+UITree.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Client_Code/!svn/ver/585/Game/GameUI/Modules/Task/View/UITree.as
+END
+AcceptTaskInfoPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/View/AcceptTaskInfoPanel.as
+END
+TaskInfoPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/903/Game/GameUI/Modules/Task/View/TaskInfoPanel.as
+END
+VitListCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/View/VitListCell.as
+END
+TaskPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/903/Game/GameUI/Modules/Task/View/TaskPanel.as
+END
+TaskFollowCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/View/TaskFollowCell.as
+END
+TaskFollowPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1597/Game/GameUI/Modules/Task/View/TaskFollowPanel.as
+END
+TaskGroupCellRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/294/Game/GameUI/Modules/Task/View/TaskGroupCellRenderer.as
+END
+TreeCellRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/585/Game/GameUI/Modules/Task/View/TreeCellRenderer.as
+END
+TaskText.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1574/Game/GameUI/Modules/Task/View/TaskText.as
+END
+TaskAccPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/1597/Game/GameUI/Modules/Task/View/TaskAccPanel.as
+END
+EquPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/View/EquPanel.as
+END

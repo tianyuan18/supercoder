@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="367" height="187">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx"
+			 xmlns:c="control.*"
+			 title="图片转换"
+			  width="361" height="185">
+		<fx:Script>
+			<![CDATA[
+				import common.App;
+				import common.STDispatcher;
+				
+				import flashx.textLayout.formats.Direction;
+				
+				import model.STEvent;
+				
+				import mx.controls.Alert;
+				import mx.core.UIComponent;
+				import mx.events.FlexEvent;
+				import mx.graphics.codec.JPEGEncoder;
+				import mx.graphics.codec.PNGEncoder;
+				 
+				private var _file:File=File.applicationDirectory;	
+				private var arrLoader:Array;
+				
+				//事件：点击取消按钮
+				protected function btnCancel_clickHandler(event:MouseEvent):void{
+
+				}
+				
+				//事件：点击项目目录选择按钮
+				protected function btnChoose_clickHandler(event:MouseEvent):void{
+					_file.browseForDirectory("选择项目保存路径");
+					_file.addEventListener(Event.SELECT,fileSelectHanlder);
+				}
+				
+				//事件：项目目录选择完毕
+				private function fileSelectHanlder(evet:Event):void{
+					txtProPath.text= _file.nativePath;
+				}
+	
+				//事件：提交
+				protected function btnOK_clickHandler(event:MouseEvent):void{
+					
+					if(txtProPath.text==""){
+						Alert.show("请选择图片路径");
+						return;
+					}
+					onStart();
+				}
+				
+				
+				public function onStart():void{
+					//找到所有文件
+					var fileArr:Array=_file.getDirectoryListing();
+					arrLoader=new Array();
+					for(var i:int=0;i<fileArr.length;i++){
+						var fileT:File=fileArr[i] as File;
+						if(fileT.extension.toLowerCase()=="png"){
+							arrLoader.push({name:fileT.nativePath});
+						}
+					}
+					
+					onComplete(null);
+				}
+				
+				public function onComplete(evt:Event):void{
+					
+					if(evt!=null && arrLoader.length>0){
+						var loaderinfo:LoaderInfo=evt.target as  LoaderInfo;
+						var loader:MyLoader=loaderinfo.loader as MyLoader;
+						var path:String=loader.path;
+						var bData:BitmapData=loaderinfo.content["bitmapData"] as BitmapData;
+						var bOut:BitmapData=new BitmapData(int(txtImgWidth.text),int(txtImgHeight.text));
+						bOut.copyPixels(bData,new Rectangle((bData.width-bOut.width)/2,(bData.height-bOut.height)/2,bOut.width,bOut.height),new Point(0,0));
+						
+						//小图片所在的矩形区域
+						var recs:Rectangle=new Rectangle(0,0,bOut.width,bOut.height);
+						
+						//JPEG编码矩形区域的bytes数组 or PNGEncoder 品质100
+						//var pngEncoder:PNGEncoder=new PNGEncoder();
+						var jpgEncoderS:PNGEncoder=new PNGEncoder();
+						var bytespixelsS:ByteArray=bOut.getPixels(recs)
+						var bytesS:ByteArray=jpgEncoderS.encodeByteArray(bytespixelsS,bOut.width,bOut.height);
+						
+						//写入到本地文档HFMapEdit/文件夹中
+						var fsS:FileStream = new FileStream();
+						var fileS:File = new File(path);
+						fsS.openAsync(fileS,FileMode.WRITE);
+						fsS.writeBytes(bytesS);
+						fsS.close();
+						
+						arrLoader.shift();
+					}
+					
+					if(arrLoader.length>0){
+						var imgLoder:MyLoader=new MyLoader();
+						imgLoder.path=arrLoader[0].name;
+						imgLoder.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete);
+						imgLoder.load(new URLRequest(arrLoader[0].name));
+					}
+				}
+				
+				
+			]]>
+		</fx:Script>
+	
+		
+			<s:VGroup width="100%" height="100%">
+				<s:HGroup width="100%" height="24">
+					<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+						<s:Label text="生成尺寸：" height="21" paddingTop="5" width="72"/>
+						<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+						<s:TextInput id="txtImgWidth" width="97" text="100"/>
+						<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+						<s:TextInput id="txtImgHeight" width="97" text="100"/>
+					</s:HGroup>
+				</s:HGroup>
+				<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				</s:HGroup>
+				<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+					<s:Label text="图片路径：" height="21" paddingTop="5" width="70"/>
+					<mx:TextInput id="txtProPath" width="227"/>
+					<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				</s:HGroup>
+				<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+					<s:Button label="确定"  click="btnOK_clickHandler(event)"/>
+					<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+				</s:HGroup>
+			</s:VGroup>
+	</c:GameMoveWindow>
+</s:WindowedApplication>

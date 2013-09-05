@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" title="蛋壳编辑器"
+					   windowResize="windowedapplication1_windowResizeHandler(event)"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   left="0" top="0" initialize="windowedapplication1_initializeHandler(event)">
+	<!--编辑器主界面：菜单+主容器-->
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<fx:XMLList xmlns="" id="menuData">
+			<xxx label="文件" data="top">
+				<xxx label="新建" data="top">
+					<xxx label="新建项目" data="新建项目"/>
+				</xxx>
+				<xxx label="打开项目" data="打开项目"></xxx>
+				<xxx label="保存项目" data="保存项目" enabled="{wProject.isVisible}"></xxx>
+				<xxx label="生成项目" data="生成项目" enabled="{wProject.isVisible}"></xxx>
+			</xxx>
+			<xxx label="窗口" data="top">
+				<!--起始页-->
+				<xxx label="起始页" data="起始页"></xxx>
+				<!--项目面板只有在打开项目后才可使用-->
+				<xxx label="项目" data="项目"  enabled="{App.isProOpen}"></xxx>
+			</xxx>
+			<xxx label="帮助" data="top">
+				<xxx label="使用帮助" data="使用帮助" />
+				<xxx label="更新说明" data="更新说明" />
+				<xxx label="关于" data="关于" />
+			</xxx>
+		</fx:XMLList>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			
+			import frame.CreateNew.CreateProject;
+			import frame.HelpWindow.WindowAbout;
+			import frame.HelpWindow.WindowHelp;
+			import frame.HelpWindow.WindowUpdate;
+			import frame.ViewWindow.WindowProject;
+			import frame.ViewWindow.WindowStart;
+			
+			import mx.collections.*;
+			import mx.events.FlexEvent;
+			import mx.events.FlexNativeWindowBoundsEvent;
+			import mx.events.MenuEvent;
+			
+			[Bindable]  
+			private var wProject:WindowProject; 	//项目面板
+			
+			//事件：主菜单选择
+			private function menuHandler(event:MenuEvent):void{
+				if (event.item.@data.toString() != "top"){
+					switch(event.item.@data.toString()){
+						case "新建项目":
+							CreateProject.open();
+							break;
+						case "打开项目":
+							var mapDataFileFilter:FileFilter = new FileFilter("项目文件(."+App.PROEXTENSION+")", "*."+App.PROEXTENSION);//地图文件过滤
+							var mapDataSelectFile:File=new File();
+							mapDataSelectFile = File.applicationDirectory;
+							mapDataSelectFile.browseForOpen("选择项目文件",[mapDataFileFilter]);
+							mapDataSelectFile.addEventListener(Event.SELECT,onSelectProFile);
+							break;
+						case "保存项目":
+							if(App.proCurrernt!=null){
+								App.proCurrernt.save();
+							}
+							break;
+						case "生成项目":
+							if(App.proCurrernt!=null){
+								App.proCurrernt.Output();
+							}
+							break;
+						case "项目"://项目
+							WindowProject.open(); break;
+						case "起始页"://起始页
+							WindowStart.Open(); break;
+						
+						case "关于":
+							WindowAbout.Open();
+							break;
+						case "使用帮助":
+							WindowHelp.open();
+							break;
+						case "更新说明":
+							WindowUpdate.open();
+							break;
+					}
+				}
+			}
+			
+			//事件：选择项目
+			private function onSelectProFile(event:Event):void{
+				var mapDataSelectFile:File=event.target as File;
+				App.openPro(mapDataSelectFile.nativePath);
+			}
+			
+			//事件：窗体大小变化
+			protected function windowedapplication1_windowResizeHandler(event:FlexNativeWindowBoundsEvent):void{
+				MainContainer.height=this.height-20;
+			}
+			
+			//事件：应用程序开启完毕
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void{
+				
+				windowedapplication1_windowResizeHandler(null);
+				//起始页
+				var wStart:WindowStart=WindowStart.Open();
+				wStart.x=this.width/2-wStart.width/2;
+				wStart.y=this.height/2-wStart.height/2;
+				MainContainer.addElement(wStart);
+				wStart.show();
+				
+				//创建项目
+				var wCreatePro:CreateProject=CreateProject.open();
+				wCreatePro.x=this.width/2-wCreatePro.width/2;
+				wCreatePro.y=this.height/2-wCreatePro.height/2;
+				MainContainer.addElement(wCreatePro);
+				wCreatePro.hide();
+				
+				//关于
+				var wAbout:WindowAbout=WindowAbout.Open();
+				wAbout.x=this.width/2-wAbout.width/2;
+				wAbout.y=this.height/2-wAbout.height/2;
+				wAbout.hide();
+				MainContainer.addElement(wAbout);
+				
+				//使用帮助
+				var wHlp:WindowHelp=WindowHelp.open();
+				wHlp.x=this.width/2-wHlp.width/2;
+				wHlp.y=this.height/2-wHlp.height/2;
+				wHlp.hide();
+				MainContainer.addElement(wHlp);
+				
+				//更新说明
+				var wUpdate:WindowUpdate=WindowUpdate.open();
+				wUpdate.x=this.width/2-wUpdate.width/2;
+				wUpdate.y=this.height/2-wUpdate.height/2;
+				wUpdate.hide();
+				MainContainer.addElement(wUpdate);
+				
+				//项目窗口
+				wProject=WindowProject.open();
+				MainContainer.addElement(wProject);
+			}
+			
+			
+			protected function windowedapplication1_initializeHandler(event:FlexEvent):void{
+				//最大化
+				WindowedApplication(this).maximize();new Vector.<BitmapData>
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:MenuBar labelField="@label" width="100%" height="20" itemClick="menuHandler(event);" dataProvider="{menuData}">
+	</mx:MenuBar>
+	<s:Group id="MainContainer" width="100%" y="20" height="433"/>
+</s:WindowedApplication>

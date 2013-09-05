@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Client_Code/!svn/ver/1611/Game/GameUI/Modules/Friend/view/mediator
+END
+PlayerInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Client_Code/!svn/ver/844/Game/GameUI/Modules/Friend/view/mediator/PlayerInfoMediator.as
+END
+ReceiveMsgMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/mediator/ReceiveMsgMediator.as
+END
+FriendAlterMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Client_Code/!svn/ver/1611/Game/GameUI/Modules/Friend/view/mediator/FriendAlterMediator.as
+END
+SendMsgMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/mediator/SendMsgMediator.as
+END
+FriendManagerMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/Client_Code/!svn/ver/1451/Game/GameUI/Modules/Friend/view/mediator/FriendManagerMediator.as
+END
+SelectFontColorMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/mediator/SelectFontColorMediator.as
+END
+FriendChatMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/view/mediator/FriendChatMediator.as
+END

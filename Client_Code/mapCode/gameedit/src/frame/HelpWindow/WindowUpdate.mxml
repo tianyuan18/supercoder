@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="更新说明" alphaEnable="false"
+				  xmlns:s="library://ns.adobe.com/flex/spark"  xmlns:c="control.*"
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  width="400" height="300">
+	<!--更新说明-->
+	<fx:Script>
+		<![CDATA[
+			
+			import mx.events.FlexEvent;
+			private static var _windowUpdate:WindowUpdate;
+			public static function open():WindowUpdate{
+				if(_windowUpdate==null){
+					_windowUpdate=new WindowUpdate();	
+				}
+				else if(_windowUpdate.parent!=null){
+					_windowUpdate.show();
+				}
+				
+				return _windowUpdate;
+			}
+		]]>
+	</fx:Script>
+	<s:Group width="100%" height="100%">
+		
+	</s:Group>
+</c:GameMoveWindow>

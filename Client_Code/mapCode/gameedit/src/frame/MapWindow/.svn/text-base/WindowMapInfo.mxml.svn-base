@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow title="地图详情" width="383" height="362"
+		xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:control="control.*" layout="absolute" >
+
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			
+			import modelExtend.MapExtend;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.graphics.codec.PNGEncoder;
+			import mx.managers.PopUpManager;
+			import mx.utils.StringUtil;
+			
+			private function get _map():MapExtend{
+				return App.proCurrernt.MapCurrent;
+			}
+			
+			protected function btnOutput_clickHandler(event:MouseEvent):void{
+				//背景信息
+				var tmptileWidth:int=parseInt(this.txtTileWidth.text);	//单个背景切片宽度
+				var tmptileHeight:int=parseInt(this.txtTileHeight.text);	//单个背景切片高度
+				var tmptileCol:int=parseInt(this.txtTileCol.text);		//地图背景横向切片数量
+				var tmptileRow:int=parseInt(this.txtTileRow.text);		//地图背景纵向切片数量
+				
+				var tmpLineWidth:int=parseInt(this.txtLineWidth .text);		//地图背景横向切片数量
+				var tmpLineHeight:int=parseInt(this.txtLineHeight.text);		//地图背景纵向切片数量
+				if(tmptileWidth<10) { Alert.show("切片宽度必须是大于等于10的整数");return;}
+				if(tmptileHeight<10) { Alert.show("切片格高度必须是大于等于10的整数");return;}
+				if(tmptileCol<=1) { Alert.show("切片横向数必须是大于等于1的整数");return;}
+				if(tmptileRow<=1) { Alert.show("切片纵向数必须大于1的整数");return;}
+				if(cbLine.selected &&(!tmpLineWidth>100 ||  !tmpLineHeight>100)){
+					Alert.show("标记线必须是大于100的整数");
+					return;
+				}
+				if(_map!=null){
+					_map.tileWidth=tmptileWidth;
+					_map.tileHeight=tmptileHeight;
+					_map.tileCol=tmptileCol;
+					_map.tileRow=tmptileRow;
+					_map.lineWidth=tmpLineWidth;
+					_map.lineHeight=tmpLineHeight;
+					_map.save();
+					_map.output(cbXML.selected,cbSImg.selected,cbAImg.selected,cbLine.selected,txtSaveFormatName.text);
+				}
+			}
+			
+			public override function show():void{
+				super.show();setMapInfo();
+			}
+			
+			public function setMapInfo():void{
+				if(_map!=null){
+					txtMapName.text=_map.name;
+					txtMapBGPath.text=App.proCurrernt.pathRoot+"Output\\"+_map.name+"\\bg.jpg";
+					txtImgWidth.text=_map.bgBitmapData.width.toString();
+					txtImgHeight.text=_map.bgBitmapData.height.toString();
+					txtMapWidth.text=_map.mapWidth.toString();
+					txtMapHeight.text=_map.mapHeight.toString();
+					txtCellWidth.text=_map.cellWidth.toString();
+					txtCellHeight.text=_map.cellHeight.toString();
+					txtCellCol.text=_map.cellCol.toString();
+					txtTileWidth.text=_map.tileWidth.toString();
+					txtTileHeight.text=_map.tileHeight.toString();
+					txtTileCol.text=_map.tileCol.toString();
+					txtTileRow.text=_map.tileRow.toString();
+				}
+			}
+
+			protected function btnSave_clickHandler(event:MouseEvent):void{
+				//背景信息
+				var tmptileWidth:int=parseInt(this.txtTileWidth.text);	//单个背景切片宽度
+				var tmptileHeight:int=parseInt(this.txtTileHeight.text);	//单个背景切片高度
+				var tmptileCol:int=parseInt(this.txtTileCol.text);		//地图背景横向切片数量
+				var tmptileRow:int=parseInt(this.txtTileRow.text);		//地图背景纵向切片数量
+				if(tmptileWidth<10) { Alert.show("切片宽度必须是大于等于10的整数");return;}
+				if(tmptileHeight<10) { Alert.show("切片格高度必须是大于等于10的整数");return;}
+				if(tmptileCol<=1) { Alert.show("切片横向数必须是大于等于1的整数");return;}
+				if(tmptileRow<=1) { Alert.show("切片纵向数必须大于1的整数");return;}
+				
+				if(_map!=null){
+					_map.tileWidth=tmptileWidth;
+					_map.tileHeight=tmptileHeight;
+					_map.tileCol=tmptileCol;
+					_map.tileRow=tmptileRow;
+					_map.save();
+					Alert.show("保存完毕")
+				}
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+		<s:VGroup  width="100%" height="100%">
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				<s:Label text="地图名称：" height="21" paddingTop="5" width="72"/>
+				<s:TextInput id="txtMapName" width="262" text="请输入地图名称"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="背景路径：" height="21" paddingTop="5" width="72"/>
+				<s:TextInput id="txtMapBGPath" width="227" enabled="false"/>
+				<s:Button label="..." width="30" />
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="背景尺寸：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtImgWidth" enabled="false" width="97"/>
+				<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtImgHeight" enabled="false" width="97"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="地图尺寸：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtMapWidth" enabled="false" width="97"/>
+				<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtMapHeight" enabled="false" width="97"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="单元格尺寸：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtCellWidth" enabled="false" width="97" text="60"/>
+				<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtCellHeight" enabled="false" width="97" text="30"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="单元格数量：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="列数" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtCellCol" enabled="false" text="{int(int(txtMapWidth.text) / int(txtCellWidth.text))}" width="97"/>
+				<s:Label text="行数" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtCellRow" enabled="false" text="{int(int(txtMapHeight.text) / int(txtCellHeight.text)*2)}"  width="97"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="切片尺寸：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtTileWidth"  width="97" text="120"/>
+				<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtTileHeight"  width="97" text="60"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="切片数量：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="列数" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtTileCol" enabled="false" text="{int(Number(txtMapWidth.text) / Number(txtTileWidth.text))}"  width="97"/>
+				<s:Label text="行数" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtTileRow" enabled="false" text="{int(Number(txtMapHeight.text) / Number(txtTileHeight.text))}" width="97"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="缩略图品质：" height="21" paddingTop="5" width="72"/>
+				<s:TextInput id="txtImgQuality" width="265" text="1"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="20" paddingLeft="10" paddingTop="-4">
+				<s:Label text="标记线条：" height="21" paddingTop="5" width="72"/>
+				<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+				<s:TextInput id="txtLineWidth"  width="97" text="250"/>
+				<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+				<s:TextInput id="txtLineHeight"  width="97" text="150"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="27" paddingLeft="10" paddingTop="0">
+				<s:CheckBox id="cbXML" label="xml" selected="true"/>
+				<s:CheckBox id="cbSImg" label="切割图片"/>
+				<s:CheckBox id="cbLine" label="标记线"/>
+				<s:CheckBox id="cbAImg" label="缩略图"/>
+				<s:Button id="btnOutput" label="导出数据" click="btnOutput_clickHandler(event)"/>
+				<s:Button id="btnSave" label="保存" click="btnSave_clickHandler(event)" width="56"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				<s:Label text="切片命名格式：" height="21" paddingTop="5" width="72"/>
+				<s:TextInput id="txtSaveFormatName" width="262" text="(y)_(x).jpg"/>
+			</s:HGroup>
+		</s:VGroup>
+</control:GameMoveWindow>

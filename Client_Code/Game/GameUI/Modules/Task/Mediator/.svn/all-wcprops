@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/1605/Game/GameUI/Modules/Task/Mediator
+END
+TaskInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1605/Game/GameUI/Modules/Task/Mediator/TaskInfoMediator.as
+END
+TaskExpandMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/449/Game/GameUI/Modules/Task/Mediator/TaskExpandMediator.as
+END
+TaskMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/1574/Game/GameUI/Modules/Task/Mediator/TaskMediator.as
+END
+TaskFollowMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1530/Game/GameUI/Modules/Task/Mediator/TaskFollowMediator.as
+END
+TaskVitMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/Mediator/TaskVitMediator.as
+END
+TaskUnFinishMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1601/Game/GameUI/Modules/Task/Mediator/TaskUnFinishMediator.as
+END

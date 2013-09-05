@@ -1,0 +1,498 @@
+package Controller
+{
+	import GameUI.Modules.MainSence.Data.MainSenceData;
+	import GameUI.Modules.NewPlayerCard.Data.NewerCardData;
+	import GameUI.Modules.NewerHelp.Data.NewerHelpData;
+	import GameUI.Modules.NewerHelp.Data.NewerHelpEvent;
+	import GameUI.Modules.Task.Commamd.MoveToCommon;
+	import GameUI.Modules.Task.Commamd.TaskCommandList;
+	import GameUI.Modules.Task.Model.TaskInfoStruct;
+	import GameUI.Modules.Task.Model.TaskProxy;
+	import GameUI.UICore.UIFacade;
+	
+	import OopsEngine.Scene.CommonData;
+	import OopsEngine.Scene.StrategyElement.GameElementAnimal;
+	import OopsEngine.Scene.StrategyElement.GameElementSkins;
+	
+	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.utils.Timer;
+	
+	public class TaskController
+	{
+		public static var timer:Timer;
+		public static var Process:int;
+		public static var taskId:int;			
+		public static var taskCommitNpcId:int;
+		public static var taskNpcId:int;
+		
+		 
+		
+		public static var task:TaskInfoStruct;//主线任务
+		public static var isStart:Boolean = false;
+		
+		/**
+		 * 是否锁定NPC
+		 * true:不可进行对话。
+		 * false：可进行对话 
+		 */		
+		public static var isLockNpc:Boolean = false;
+		
+		public  function TaskController()
+		{
+			
+		}
+		
+		public static function submitTask(taskId:int):void{
+			//return;
+			
+			if(taskId==118){
+				clearAutomatic();
+				return;
+			}
+			
+			//副本之中停止任务
+			if(CopyController.getInstance().isCopyForMap(GameCommonData.GameInstance.GameScene.GetGameScene.name)){
+				return;
+			}
+			
+			taskCommitNpcId = task.taskCommitNpcId;
+			
+//			mapId = arr[0];
+//			tileX = arr[1];
+//			tileY = arr[2];
+//			taskId = arr[3];
+//			npcId = arr[4];
+			if(taskId==10001&&!isStart){
+				return;
+			}
+			if(GameCommonData.GameInstance.GameScene.GetGameScene.name != CopyController.getInstance().isCopy(taskId)){
+				var arr:Array = getInfo(task.taskCommitNPC.substr(task.taskCommitNPC.search("event:")));
+				MoveToCommon.MoveTo(arr[0],arr[1],arr[2],arr[3],arr[4]);
+			}
+			
+			
+		}
+		
+		//开始任务之旅
+		public static function startTask():void{
+			var arr:Array = getInfo(task.taskCommitNPC.substr(task.taskCommitNPC.search("event:")));
+			MoveToCommon.MoveTo(arr[0],arr[1],arr[2],arr[3],arr[4]);
+		}
+		
+		public static function getInfo(str:String):Array {
+			
+			return str.substring(6,str.indexOf("\"")).split(",");
+		}
+		
+		public static function acceptTask(taskInfo:TaskInfoStruct):void{
+		
+			
+			if(GameCommonData.Player.Role.Level<taskInfo.taskLevel)
+				return;
+			
+			if(CopyController.getInstance().isCopyForMap(GameCommonData.GameInstance.GameScene.GetGameScene.name)){
+				return;
+			}
+			taskNpcId = taskInfo.taskNpcId;
+			var arr:Array = getInfo(task.taskNPC.substr(task.taskNPC.search("event:")));
+			MoveToCommon.MoveTo(arr[0],arr[1],arr[2],arr[3],arr[4]);
+		}
+		
+		public static function doProcess1(taskId:int):void{
+			
+		
+			
+			//副本之中停止任务
+			if(CopyController.getInstance().isCopyForMap(GameCommonData.GameInstance.GameScene.GetGameScene.name)){
+				return;
+			}
+			
+//			if(task.taskType=="主线任务"){
+//				GameCommonData.UIFacadeIntance.sendNotification(NewerHelpEvent.OPEN_TASK_GUIDE_VIEW,task.taskProcessFinish);
+//			}
+			var arr:Array = getInfo(task.taskProcess1.substr(task.taskProcess1.search("event:")));
+			if(arr[4]==0){
+				if(!CopyController.getInstance().isCopy(taskId)){
+					GameCommonData.autoPlayAnimalType = 100000;
+					//GameCommonData.Player.IsAutomatism = true;
+				}
+				
+			}
+			MoveToCommon.MoveTo(arr[0],arr[1],arr[2],arr[3],arr[4],1);
+			
+		}
+		
+		public static function doProcess2(taskId:int):void{
+			
+		}
+		
+		public static function doProcess3(taskId:int):void{
+			
+		}
+		
+		public static function doProcess4(taskId:int):void{
+			
+		}
+		
+		public static function doProcess5(taskId:int):void{
+			
+		}
+		
+		public static function doProcess6(taskId:int):void{
+			
+		}
+		
+		
+		public static function automatic():void {
+			if(GameCommonData.isNewTaskEnd){
+				return;
+			}
+			if(!timer){
+				timer = new Timer(5000);
+				timer.addEventListener(TimerEvent.TIMER,doTask);
+				//timer.start();
+			}else{
+				//timer.start();
+			}
+			
+		}
+		
+		public static function doTask(e:TimerEvent):void {
+			
+			//trace("自动执行任务");
+			//if(GameCommonData.Player.Role.ActionState == GameElementSkins.ACTION_STATIC){
+				
+				if(!task){
+					return;
+				}
+				if(task.id!=0){
+					
+					if(task.status==3){
+						if(task.id==101){
+							return;
+						}
+						submitTask(task.id);
+					}else if(task.status==1&&task.processMask==1){
+						doProcess1(task.id);
+					}else if(task.status==0){
+						acceptTask(task);
+					}
+				}
+				
+			//}	
+		}
+		
+		public static function stopAutomatic():void {
+			if(timer&&timer.running){
+				timer.stop();
+			}
+			
+		}
+		
+		public static function update(info:Object):void{
+			
+			var taskInfo:TaskInfoStruct=GameCommonData.TaskInfoDic[info.id];
+			task = taskInfo;
+			taskInfo.isFollow=1;
+			var state:int = checkState(info);
+			if(MainSenceData.taskId==0){
+				MainSenceData.taskId = taskInfo.id;
+				var param:Array = [];
+				param.push(MainSenceData.getOpenMenuNames(taskInfo.id));
+				param.push("");
+				UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(MainSenceData.INITMAINITEM,param);
+				
+			//	UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(NewerHelpEvent.OPEN_MENU_PANLE,10072);
+				
+			}
+			var animal:GameElementAnimal;
+			var animalCommit:GameElementAnimal;
+			var type:uint;
+			if(state!=-1){
+				switch(state){
+					case 0:
+						
+						if(taskInfo.status!=0){
+							taskInfo.status=0;
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.UPDATETASKTREE,{type:2,id:info.id});        //取消一个已接的任务
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.REMOVE_TASK_FOLLOW,taskInfo);
+						}
+						UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.ADD_ACCEPT_TASK,info.id);
+						animal=GameCommonData.SameSecnePlayerList[taskInfo.taskNpcId];
+						if(animal!=null)
+						{
+							type=TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskNpcId);
+							animal.SetMissionPrompt(type);
+						}
+						animalCommit=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId];
+						if(animalCommit!=null)
+						{
+							type = TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskCommitNpcId);
+							animalCommit.SetMissionPrompt(type);
+						}
+						
+						UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.SELECT_TASKACC_PAGE);
+						if(!isLockNpc)
+							acceptTask(taskInfo);
+						
+						break;
+					case 1:
+					case 3:
+						
+						
+						if(taskInfo.status==0){
+							
+								
+							
+								
+								
+								
+							
+							if(state==1){
+								taskInfo.status=1;
+								doProcess1(info.id);
+							}else{
+								
+								taskInfo.status = 3;
+								submitTask(info.id);
+							}
+							
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.SELECT_TASKFOLLOW_PAGE);
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.REMOVE_ACCEPT_TASK,info.id);
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.SHOW_TASKSPECIFIC_COMMAND,info.id,"1");
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.UPDATETASKTREE,{type:1,id:info.id});
+							
+							animal=GameCommonData.SameSecnePlayerList[taskInfo.taskNpcId];
+							if(animal!=null)
+							{
+								type=TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskNpcId);
+								animal.SetMissionPrompt(type);
+							}
+							animalCommit=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId];
+							if(animalCommit!=null)
+							{
+								type = TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskCommitNpcId);
+								animalCommit.SetMissionPrompt(type);
+							}
+							
+							
+						}else if(taskInfo.status==1||taskInfo.status==3){
+							if(state==3){
+								taskInfo.status = 3;
+								submitTask(info.id);
+								animal=GameCommonData.SameSecnePlayerList[taskInfo.taskNpcId];
+								if(animal!=null)
+								{
+									type=TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskNpcId);
+									animal.SetMissionPrompt(type);
+								}
+								animalCommit=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId];
+								if(animalCommit!=null)
+								{
+									type = TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskCommitNpcId);
+									animalCommit.SetMissionPrompt(type);
+								}
+								
+							}else if(state==1){
+								taskInfo.status=1;
+								//doProcess1(info.id);
+							}
+							
+						}
+						
+						UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.UPDATE_TASK_PROCESS_VIEW,taskInfo);
+						
+						
+			
+//						UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.SHOW_TASKSPECIFIC_COMMAND,info.id,"1");
+//						
+
+//						
+
+//						var animal:GameElementAnimal=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId]
+//						if(taskInfo.status==3 && animal!=null){
+//							animal.SetMissionPrompt(3);	
+//						}
+//						if((taskInfo.status==1 || taskInfo.status==3) && animal!=null){
+//							animal.SetMissionPrompt(1);
+//						}else if(taskInfo.status==3 && animalCommit!=null){
+//							animalCommit.SetMissionPrompt(3);
+//						}
+						
+//						
+						
+						break;
+					case 2:
+						
+						//如果为0就是没有接的。。。。就是服务端脚本错误
+						if(taskInfo.status!=0){
+							
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.UPDATETASKTREE,{type:5,id:info.id});
+							taskInfo.status=2;		// taskInfo为空就是脚本问题
+							animal=GameCommonData.SameSecnePlayerList[taskInfo.taskNpcId];
+							if(animal!=null)
+							{
+								type=TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskNpcId);
+								animal.SetMissionPrompt(type);
+							}
+							animalCommit=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId];
+							if(animalCommit!=null)
+							{
+								type = TaskProxy.getInstance().getNpcShowTaskType(taskInfo.taskCommitNpcId);
+								animalCommit.SetMissionPrompt(type);
+							}
+							UIFacade.GetInstance(UIFacade.FACADEKEY).sendNotification(TaskCommandList.SHOW_TASKSPECIFIC_COMMAND,info.id,"2");	
+							
+							NewerHelpData.TASKINFO = taskInfo;
+							
+
+							
+							if(NewerHelpData.isTip(int(TaskProxy.getInstance().analyseGood(taskInfo.taskPrize4).seq),false)||NewerHelpData.isTip(int(TaskProxy.getInstance().analyseGood(taskInfo.taskPrize5).seq),false)){
+								
+								NewerHelpData.getCompareInfo({type:12304,id:-1},callBack);
+								
+							}else{
+								GameCommonData.UIFacadeIntance.sendNotification(NewerHelpEvent.OPEN_NEW);
+							}
+							
+//							if(MainSenceData.isNewOpen(taskInfo.id)||taskInfo.taskPrize4||taskInfo.taskPrize5){
+//								TaskController.isLockNpc = true;
+//								if((!taskInfo.taskPrize4)&&(!taskInfo.taskPrize5)){
+//									if(MainSenceData.isNewOpen(taskInfo.id)){
+//										
+//										this.sendNotification(NewerHelpEvent.OPEN_NEW,taskInfo.id);
+//									}
+//								}
+//								
+//							}
+							
+						}
+						break;
+				}
+				
+			}
+		}
+		
+		public static function callBack(arr:Array,obj:Object):void {
+			if(arr){
+				TaskController.isLockNpc = true;
+			}else{
+				GameCommonData.UIFacadeIntance.sendNotification(NewerHelpEvent.OPEN_NEW);
+			}
+		}
+		
+		public static function clearAutomatic():void {
+			if(timer){
+				timer.stop();
+				
+				timer.addEventListener(TimerEvent.TIMER,doTask);
+				timer = null;
+			}
+		}
+		
+		public static function checkState(info:Object):int {
+			var taskInfo:TaskInfoStruct=GameCommonData.TaskInfoDic[info.id];
+			var state:int = 0;
+			if(info.isRec==0||info.isRec==2){
+				return info.isRec
+			}
+			
+			if(taskInfo==null)return -1;
+			var dataArr:Array=info.dataArr as Array;
+			var mask:uint;
+			if(taskInfo.taskProcess1!=""){
+				taskInfo.taskProcess1=process(taskInfo.taskProcess1,dataArr[0]);
+				if(checkIsFinish(taskInfo.taskProcess1)){
+					
+					mask+=1;
+				}	
+			}
+			if(taskInfo.taskProcess2!=""){
+				taskInfo.taskProcess2=process(taskInfo.taskProcess2,dataArr[1]);
+				if(checkIsFinish(taskInfo.taskProcess2)){
+					mask+=2;
+				}	
+			}
+			if(taskInfo.taskProcess3!=""){
+				taskInfo.taskProcess3=process(taskInfo.taskProcess3,dataArr[2]);
+				if(checkIsFinish(taskInfo.taskProcess3)){
+					mask+=4;
+				}	
+			}
+			if(taskInfo.taskProcess4!=""){
+				taskInfo.taskProcess4=process(taskInfo.taskProcess4,dataArr[3]);
+				if(checkIsFinish(taskInfo.taskProcess4)){
+					mask+=8;
+				}	
+			}
+			if(taskInfo.taskProcess5!=""){
+				taskInfo.taskProcess5=process(taskInfo.taskProcess5,dataArr[4]);
+				if(checkIsFinish(taskInfo.taskProcess5)){
+					mask+=16;
+				}	
+			}
+			if(taskInfo.taskProcess6!=""){
+				taskInfo.taskProcess6=process(taskInfo.taskProcess6,dataArr[5]);
+				if(checkIsFinish(taskInfo.taskProcess6)){
+					mask+=32;
+				}	
+			}
+			if(taskInfo.processMask==mask||taskInfo.processMask==0){
+				state = 3;
+				
+				
+			}else{
+				state = 1;
+				
+			}
+			
+	
+			return state;
+
+			var animal:GameElementAnimal=GameCommonData.SameSecnePlayerList[taskInfo.taskCommitNpcId]
+			if(taskInfo.status==3 && animal!=null){
+				animal.SetMissionPrompt(3);	
+			}
+			//			}
+		
+			return 0;
+		}
+		
+		public static function process(source:String,data:String):String{
+			if(source==null || source.length==0)return "";
+			var tempArr:Array=[];	
+			tempArr=source.split("$");
+			if(uint(data)>=uint(tempArr[3])){
+				tempArr[1]=tempArr[3];
+			}else{
+				tempArr[1]=data;
+			}
+			var str:String=""
+			for each(var s:String in tempArr){
+				str+=s+"$";
+			}
+			str=str.substr(0,str.length-1);
+			return str;
+		}
+		
+		public static function checkIsFinish(source:String):Boolean{
+			var tempArr:Array=[];	
+			tempArr=source.split("$");
+			if(uint(tempArr[1])>=uint(tempArr[3])){
+				return true;
+			}else {
+				return false;
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+}

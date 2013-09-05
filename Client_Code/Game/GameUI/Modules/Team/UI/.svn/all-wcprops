@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Team/UI
+END
+UIUserContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Team/UI/UIUserContainer.as
+END
+TeamModelManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Team/UI/TeamModelManager.as
+END
+TeamItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Team/UI/TeamItem.as
+END
+CellRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/957/Game/GameUI/Modules/Team/UI/CellRenderer.as
+END
+UITeamContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/Team/UI/UITeamContainer.as
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool
+END
+LoadUI.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool/LoadUI.as
+END
+RoleMegController.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool/RoleMegController.as
+END
+RoleMegMemento.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool/RoleMegMemento.as
+END
+LoadManPng.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool/LoadManPng.as
+END
+CreateRoleLoading.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Login/UITool/CreateRoleLoading.as
+END

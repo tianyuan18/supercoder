@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/MusicPlayer/View
+END
+PlaylistUI.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/MusicPlayer/View/PlaylistUI.as
+END
+MusicPlayerPlaylistItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/MusicPlayer/View/MusicPlayerPlaylistItemRenderer.as
+END
+PlayerProgressUpdater.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/MusicPlayer/View/PlayerProgressUpdater.as
+END
+PlaylistVScrollBar.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/MusicPlayer/View/PlaylistVScrollBar.as
+END

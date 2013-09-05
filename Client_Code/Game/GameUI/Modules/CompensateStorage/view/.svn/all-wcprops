@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view
+END
+CompensateStorageDetailsViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CompensateStorageDetailsViewManager.as
+END
+CompensateStoragePetViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CompensateStoragePetViewManager.as
+END
+CompensateStorageItemViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CompensateStorageItemViewManager.as
+END
+CompensateStorageViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CompensateStorageViewManager.as
+END
+DetailsText.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/DetailsText.as
+END
+CSViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CSViewManager.as
+END
+CompensateStorageOtherViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/CompensateStorage/view/CompensateStorageOtherViewManager.as
+END

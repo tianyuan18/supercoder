@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Client_Code/!svn/ver/75/mapCode/gameedit/src/modelBase
+END
+Map.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/5/mapCode/gameedit/src/modelBase/Map.as
+END
+MapItemType.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/75/mapCode/gameedit/src/modelBase/MapItemType.as
+END
+Task.as
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/modelBase/Task.as
+END
+GameSimple.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/modelBase/GameSimple.as
+END
+NpcFunction.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/modelBase/NpcFunction.as
+END
+GameFull.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/modelBase/GameFull.as
+END
+MapItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/75/mapCode/gameedit/src/modelBase/MapItem.as
+END

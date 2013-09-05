@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx"  title="地图物品"
+						xmlns:control="control.*" layout="absolute"
+						width="150" height="300" alpha="0.8"
+						>
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.FileOperate;
+			
+			import event.EventData;
+			
+			import modelBase.Map;
+			import modelBase.MapItem;
+			import modelBase.MapItemType;
+			
+			import modelExtend.MapExtend;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			//npc角色图标
+			[Embed(source="images/npcRole.png")]
+			public var icoNpc:Class;
+			
+			[Embed(source="images/npcRoles.png")]
+			public var icoNpcs:Class;
+			
+			//地图图标
+			[Embed(source="images/Map.png")]
+			public var icoMap:Class;
+			
+			[Embed(source="images/Maps.png")]
+			public var icoMaps:Class;
+			
+			public static const CHOOSENPCINFO:String="CHOOSENPCINFO";
+			
+			private  function get _map():MapExtend
+			{
+				if(App.proCurrernt!=null && App.proCurrernt.MapCurrent!=null)
+				{
+					return App.proCurrernt.MapCurrent;
+				}
+				return null;
+			}
+			
+			public override function show():void
+			{
+				RefreshDataTree();
+				super.show();
+			}
+			
+			protected function itemTree_itemClickHandler(event:ListEvent):void{
+				var selectedItem:Object=itemTree.selectedItem;
+				if(selectedItem!=null && selectedItem.@type.toString()!=""){
+					dispatchEvent(new EventData (CHOOSENPCINFO,selectedItem));
+				}
+			}
+			
+			public function RefreshDataTree():void{
+				
+				var treeDate:Array=[];
+				var types:Vector.<MapItemType>=App.proCurrernt.mapItemTypes;
+				for(var t:int=0;t<types.length;t++){
+					var xml:XML=new XML("<item name=\""+types[t].name+"\" ico=\"icoNpcs\"></item>");
+					treeDate.push(xml);
+					
+					for(var i:int=0;i<_map.mapItems.length;i++)
+					{
+						var mapItem:MapItem=_map.mapItems[i];
+						if(types[t].iD==mapItem.typeid){
+							xml.appendChild(new XML("<item type=\""+types[t].iD+"\" id=\""+mapItem.id+"\" name=\""+mapItem.name+"\" x=\""+mapItem.x+"\"  y=\""+mapItem.y+"\" ico=\"icoNpc\"></item>"));
+						}
+					}
+				}
+				itemTree.dataProvider=treeDate;
+				itemTree.callLater(expandTree);
+			}
+			
+			private function expandTree():void{
+				for each(var item:XML in itemTree.dataProvider)
+					this.itemTree.expandChildrenOf(item,true);
+			}
+			
+			//得到树节点图标
+			private function setIcon(item:Object):*{
+				switch(item.@ico.toString()){
+					case "icoNpcs":return icoNpcs;
+					case "icoNpc":return icoNpc;
+					default :return icoNpc;
+				}
+			}
+		]]>
+	</fx:Script>
+	<mx:Tree x="0" y="0" id="itemTree" height="100%" width="100%" labelField="@name" itemClick="itemTree_itemClickHandler(event)" iconFunction="setIcon"></mx:Tree>
+</control:GameMoveWindow>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:control="control.*" layout="absolute" 
+					width="100%" height="100%" title="项目信息"
+					creationComplete="gamewindow1_creationCompleteHandler(event)"
+					resize="gamewindow1_resizeHandler(event)" xmlns:ViewWindow="frame.ViewWindow.*">
+	<fx:Script>
+		<![CDATA[
+		 
+			import frame.ProjectWindow.WindowMap;
+			import frame.ProjectWindow.WindowMapItemType;
+			import common.App;
+			import common.FileOperate;
+			import common.MapUtils;
+			import common.STDispatcher;
+			
+			import frame.CreateNew.map.CreateMap;
+			import frame.CreateNew.map.CreateMapItemType;
+			
+			import model.STEvent;
+
+			import modelBase.GameFull;
+			import modelBase.MapItemType;
+			
+			import modelExtend.GameFullExtend;
+			import modelExtend.MapExtend;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.events.ResizeEvent;
+			import mx.skins.halo.WindowBackground;
+			
+			private static var _windowProject:WindowProject;
+			
+			//地图物品图标
+			[Embed(source="images/npcRole.png")]
+			public var iconMapItemType:Class;
+			
+			[Embed(source="images/npcRoles.png")]
+			public var iconMapItemTypes:Class;
+			
+			//地图图标
+			[Embed(source="images/Map.png")]
+			public var icoMap:Class;
+			
+			[Embed(source="images/Maps.png")]
+			public var icoMaps:Class;
+			 
+			private var _ctNpcRole:ContextMenuItem=new ContextMenuItem("添加地图元素类型");
+			private var _ctMap:ContextMenuItem=new ContextMenuItem("添加地图");
+			
+			private var _MapItemTypeXML:XML; //Npc角色
+			private var _MapXML:XML;  //地图
+			
+			public static function open():WindowProject{
+				if(_windowProject==null){
+					_windowProject=new WindowProject();
+				}
+				else if(_windowProject.parent!=null){
+					_windowProject.show();
+				}
+				return _windowProject;
+			}
+			
+			private function get _game():GameFullExtend
+			{
+				return App.proCurrernt;
+			}
+			
+			protected function gamewindow1_creationCompleteHandler(event:FlexEvent):void{
+				
+				STDispatcher.dis.addEventListener(STEvent.PROJECT_Open,onProjectOpen);
+				STDispatcher.dis.addEventListener(STEvent.MAP_CREATED,onMapCreated);
+				STDispatcher.dis.addEventListener(STEvent.MAP_ITEMTYPE_CREATED,onMapItemTypeCreated);
+				proTree.contextMenu=new ContextMenu();
+				_ctNpcRole.visible=_ctMap.visible=false;
+				
+				_ctNpcRole.addEventListener(Event.SELECT, function():void{CreateMapItemType.open(); });
+				_ctMap.addEventListener(Event.SELECT, function():void{CreateMap.open();  });
+				
+				proTree.contextMenu.addItem(_ctNpcRole);
+				proTree.contextMenu.addItem(_ctMap);
+				proTree.contextMenu.addEventListener(ContextMenuEvent.MENU_SELECT,rightClickHandler);
+				
+				//创建地图
+				var wCreateMap:CreateMap;	
+				wCreateMap=CreateMap.open();
+				wCreateMap.x=rightContainer.width/2-wCreateMap.width/2;
+				wCreateMap.y=rightContainer.height/2-wCreateMap.height/2;
+				wCreateMap.hide();
+				rightContainer.addElement(wCreateMap);
+				
+				//创建地图类型
+				var wCreateNpcRole:CreateMapItemType=CreateMapItemType.open();
+				wCreateNpcRole.x=rightContainer.width/2-wCreateNpcRole.width/2;
+				wCreateNpcRole.y=rightContainer.height/2-wCreateNpcRole.height/2;
+				rightContainer.addElement(wCreateNpcRole);
+			
+				
+				//地图
+				var wMap:WindowMap=WindowMap.open();
+				wMap.x=0;
+				wMap.y=0;
+				wMap.hide();
+				rightContainer.addElement(wMap);
+			 
+				
+				//npc角色查看
+				var wNpcRole:WindowMapItemType=WindowMapItemType.open();
+				wNpcRole.x=rightContainer.width/2-wNpcRole.width/2;
+				wNpcRole.y=rightContainer.height/2-wNpcRole.height/2;
+				wNpcRole.hide();
+				rightContainer.addElement(wNpcRole);
+			 
+			}
+			
+			private function rightClickHandler(ev:ContextMenuEvent):void{
+				_ctNpcRole.visible=_ctMap.visible=false;
+				proTree.selectedItem=null;
+				var tag:Object=ev.mouseTarget;
+				//右键时行选中，此处需捕获异常
+				try{
+					if(tag && tag.parent && tag.parent.data && (tag.parent.data is XML)){
+						proTree.selectedItem=tag.parent.data;
+						var dt:XML=tag.parent.data;
+						if(_MapItemTypeXML && dt==_MapItemTypeXML){
+							_ctNpcRole.visible=true;
+						}
+						else if(_MapXML!=null && dt==_MapXML){
+							_ctMap.visible=true;
+						}
+					}
+				}
+				catch(ex:Error){
+				}
+			}
+			
+			//事件：项目打开时
+			private function onProjectOpen(event:STEvent):void{
+				this.show();
+			}
+			
+			
+			
+			//事件：地图创建时
+			private function onMapCreated(evt:STEvent):void{
+				App.proCurrernt.MapCurrent=evt.Data as MapExtend;
+				App.proCurrernt.MapCurrent.save();
+				_game.maps.push(App.proCurrernt.MapCurrent);
+				this.callLater(show);
+				this.callLater(WindowMap.open);
+			}
+			 
+			
+			//事件：地图元素类型创建时
+			private function onMapItemTypeCreated(evt:STEvent):void{
+				var mapItemType:MapItemType=evt.Data as MapItemType;
+				_game.mapItemTypes.push(mapItemType);
+				_game.save();
+				this.callLater(show);
+			} 
+			
+			//重写方法:显示(打开)窗体
+			public override function show():void{
+				if(App.proCurrernt!=null){
+					
+					RefreshDataTree();
+					txtProName.text=App.proCurrernt.simple.name;
+					txtProPath.text=App.proCurrernt.simple.path;
+				}
+				super.show();
+			}
+			
+			/**
+			 * 刷新项目数据
+			 */
+			public function RefreshDataTree():void{
+				
+				_MapItemTypeXML=<item name="地图元素类型" ico="iconMapItemTypes" ></item>; 
+				_MapXML=<item name="地图"  ico="icoMaps"></item>;
+				var treeDate:Array=[_MapItemTypeXML,_MapXML];
+				var i:int=0;
+				for(i=0;i<_game.mapItemTypes.length;i++)
+				{
+					_MapItemTypeXML.appendChild(new XML("<item  type=\"mapItemType\" id=\""+_game.mapItemTypes[i].iD+"\" name=\""+_game.mapItemTypes[i].name+
+						"\" ico=\"iconMapItemType\"></item>"));
+				}
+				
+				for(i=0;i<_game.maps.length;i++)
+				{
+					_MapXML.appendChild(new XML("<item  type=\"map\" id=\""+_game.maps[i].iD+"\" name=\""+_game.maps[i].name+
+						"\" ico=\"icoMap\"></item>"));
+				}
+				
+				proTree.dataProvider=treeDate;
+				proTree.callLater(expandTree);
+			}
+			
+			private function expandTree():void{
+				for each(var item:XML in proTree.dataProvider)
+				this.proTree.expandChildrenOf(item,true);
+			}
+			
+			//事件：窗体大小改变
+			protected function gamewindow1_resizeHandler(evt:ResizeEvent):void{
+				buttomContaier.height=this.height-120;
+				rightContainer.width=this.width-proTree.width-10;
+				txtProName.width=this.width-80;
+				txtProPath.width=this.width-80;
+			}
+			
+			protected function proTree_itemClickHandler(evt:ListEvent):void{
+				var selectedItem:Object=proTree.selectedItem;
+				if(selectedItem!=null && selectedItem.@id.toString()!=""){
+					var idTmp:int=(int)(selectedItem.@id.toString());
+					
+					if(selectedItem.@type.toString()=="mapItemType"){
+		
+						if(App.proCurrernt.mapItemTypeCurrent!=null){
+							if(proTree.selectedItem.@name.toString()==App.proCurrernt.mapItemTypeCurrent.name){
+								WindowMapItemType.open();	
+								return;
+							}
+							else{
+								
+							}
+						}
+						
+						App.proCurrernt.mapItemTypeCurrent=_game.getMapItemType(idTmp);
+						WindowMapItemType.open();			
+					}else if(selectedItem.@type.toString()=="map"){
+						
+						if(App.proCurrernt.MapCurrent!=null){
+							if(proTree.selectedItem.@name.toString()==App.proCurrernt.MapCurrent.name){
+								WindowMap.open();
+								//Alert.show("当前地图为选择地图");
+								return;
+							}
+							else{
+								App.proCurrernt.MapCurrent.save();
+							}
+						}
+						
+						App.proCurrernt.MapCurrent=_game.getMap(idTmp);
+						WindowMap.open()
+					}
+				}
+			}
+			
+			//得到树节点图标
+			private function setIcon(item:Object):*{
+				switch(item.@ico.toString()){
+					case "iconMapItemTypes":return iconMapItemTypes;
+					case "iconMapItemType":return iconMapItemType;
+					case "icoMaps":return icoMaps;
+					case "icoMap":return icoMap;
+					default:return iconMapItemType;
+				}
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:VGroup  width="100%" height="100%">
+		<s:HGroup width="100%" height="25" paddingTop="1">
+			<s:Label text="项目名称:" paddingLeft="10" paddingTop="6" width="67"/>
+			<s:TextInput id="txtProName" width="241"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="25" paddingTop="1">
+			<s:Label text="项目目录:" paddingLeft="10" paddingTop="6" width="67"/>
+			<s:TextInput id="txtProPath" width="241"/>
+		</s:HGroup>
+		<s:HGroup id="buttomContaier" width="100%" height="353">
+			<mx:Tree id="proTree" height="100%" width="200" labelField="@name" itemClick="proTree_itemClickHandler(event)" iconFunction="setIcon">
+			</mx:Tree>
+			<s:Group id="rightContainer" width="466" height="100%">
+ 
+			</s:Group>
+		</s:HGroup>
+	</s:VGroup>
+</control:GameWindow>

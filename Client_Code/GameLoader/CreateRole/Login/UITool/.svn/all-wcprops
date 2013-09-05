@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Client_Code/!svn/ver/32/GameLoader/CreateRole/Login/UITool
+END
+LoadSwfTool.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/7/GameLoader/CreateRole/Login/UITool/LoadSwfTool.as
+END
+LoadUI.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/LoadUI.as
+END
+RoleMegController.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/32/GameLoader/CreateRole/Login/UITool/RoleMegController.as
+END
+UIUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/UIUtils.as
+END
+RoleMegMemento.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/7/GameLoader/CreateRole/Login/UITool/RoleMegMemento.as
+END
+LoadInfoPng.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/7/GameLoader/CreateRole/Login/UITool/LoadInfoPng.as
+END
+LoadManPng.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/7/GameLoader/CreateRole/Login/UITool/LoadManPng.as
+END
+ImageItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/ImageItem.as
+END
+CreateRoleLoading.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/CreateRoleLoading.as
+END
+SmartURL.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/SmartURL.as
+END
+PanelBase.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/PanelBase.as
+END
+LoadingItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/1/GameLoader/CreateRole/Login/UITool/LoadingItem.as
+END

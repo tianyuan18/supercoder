@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Client_Code/!svn/ver/1200/Game/GameUI/Modules/Designation/Data
+END
+DesignationCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/914/Game/GameUI/Modules/Designation/Data/DesignationCommand.as
+END
+DesignationEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Designation/Data/DesignationEvent.as
+END
+DesignationProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1200/Game/GameUI/Modules/Designation/Data/DesignationProxy.as
+END
+DesignationChangeCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Client_Code/!svn/ver/851/Game/GameUI/Modules/Designation/Data/DesignationChangeCommand.as
+END

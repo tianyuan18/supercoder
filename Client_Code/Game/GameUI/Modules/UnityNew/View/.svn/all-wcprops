@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View
+END
+DefendAttackPanel.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/DefendAttackPanel.as
+END
+IUnityCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/UnityNew/View/IUnityCell.as
+END
+SingleHasUnityListCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/SingleHasUnityListCell.as
+END
+SingleApplyListCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/SingleApplyListCell.as
+END
+SingleMemberListCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/SingleMemberListCell.as
+END
+SingleJoinUnityCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/SingleJoinUnityCell.as
+END
+SingleContributeListCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Client_Code/!svn/ver/1353/Game/GameUI/Modules/UnityNew/View/SingleContributeListCell.as
+END

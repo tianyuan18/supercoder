@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Client_Code/!svn/ver/314/Game/GameUI/Modules/PlayerInfo/Command
+END
+ProcessPlayerDetailCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/ProcessPlayerDetailCommand.as
+END
+QueryPlayerDetailInfoCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/QueryPlayerDetailInfoCommand.as
+END
+DataChangeEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/DataChangeEvent.as
+END
+DataChangeType.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/DataChangeType.as
+END
+PlayerInfoComList.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/PlayerInfoComList.as
+END
+TeamPosProcessCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/TeamPosProcessCommand.as
+END
+AllRoleInfoUpdateCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/Client_Code/!svn/ver/314/Game/GameUI/Modules/PlayerInfo/Command/AllRoleInfoUpdateCommand.as
+END
+TeamEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Command/TeamEvent.as
+END

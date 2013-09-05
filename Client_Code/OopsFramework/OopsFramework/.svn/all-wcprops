@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Client_Code/!svn/ver/930/OopsFramework/OopsFramework
+END
+DrawableGameComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/DrawableGameComponent.as
+END
+IDisposable.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/IDisposable.as
+END
+IUpdateable.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/IUpdateable.as
+END
+IGameComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/IGameComponent.as
+END
+GameTime.as
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/GameTime.as
+END
+Memory.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/Memory.as
+END
+Game.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/284/OopsFramework/OopsFramework/Game.as
+END
+IDrawable.as
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/IDrawable.as
+END
+GameComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/GameComponent.as
+END

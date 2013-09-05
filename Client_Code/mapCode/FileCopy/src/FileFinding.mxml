@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="1000" height="410" creationComplete="group1_creationCompleteHandler(event)">
+	<!--
+		组件功能：读取windows目录结构和文件。
+		最终目的：找到index.dat文件。
+	-->
+	<fx:Script>
+		<![CDATA[
+			import event.EventFileFinding;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+		 
+			
+			//当前操作文件
+			protected var currentFile:File=new File();
+			 
+			 
+			//读取地址框文件
+			protected function btnRead_clickHandler(event:MouseEvent):void
+			{
+				var fileRootStr:String=txtFileRoot.text;
+				readFile(fileRootStr);
+			}
+			
+			//打开选择文件
+			protected function listFiles_doubleClickHandler(event:MouseEvent):void
+			{
+				if(listFiles.selectedItem!=null){
+					var newFileStr:String=listFiles.selectedItem.file.nativePath;
+					readFile(newFileStr);
+				}
+			}
+			
+			//打开父文件
+			protected function btnParent_clickHandler(event:MouseEvent):void
+			{
+				var file:File=currentFile;
+				if(file==null){
+					var fileRootStr:String=txtFileRoot.text;
+					if(fileRootStr!=""){
+						file=new File(fileRootStr);
+						if(!file.exists){
+							return;
+						}
+					}
+				}
+				
+				if(file!=null && file.exists){
+					if(file.parent!=null){
+						readFile(file.parent.nativePath);
+					}else{
+						Alert.show("父文件不存在");
+					}
+				}else{
+					Alert.show("文件不存在");
+				}
+			}
+			
+			protected function readFileInfo(file:File):void{
+				var fileSize:Number=file.size/1000000.0;
+				lblFileSize.text="大小:"+fileSize.toString()+"M"
+			}
+			
+			//读取文件
+			protected function readFile(fileRootStr:String):void{
+				if(fileRootStr!=""){
+					var file:File=new File(fileRootStr);
+					if(file.exists){
+						
+						var directory:File;
+						if(file.isDirectory){
+							//文件为一个目录
+							directory=file;
+							txtContent.text="";
+						}else{
+							//Alert.show("文件不是一个目录");
+							directory=file.parent;
+							try{
+								var fileStream:FileStream = new FileStream();
+								fileStream.open(file, FileMode.READ);
+								var strContent:String=fileStream.readUTFBytes(file.size);
+								fileStream.close();
+								txtContent.text=strContent;
+								
+							}catch(e:Error){
+								txtContent.text="";
+							}
+						}
+ 
+						
+						txtFileRoot.text=directory.nativePath;
+						if(currentFile!=null || currentFile.nativePath!=file.nativePath){
+							currentFile=file;
+							if(currentFile.name=="index.dat"){
+								 
+								this.dispatchEvent(new EventFileFinding(currentFile));
+							}
+							readFileInfo(currentFile);
+							var list:Array=directory.getDirectoryListing();
+							var listC:ArrayCollection=new ArrayCollection();
+							for(var i:int=0;i<list.length;i++){
+								listC.addItem({name:(list[i].isDirectory?"[目录]":"(文件)")+list[i].name,file:list[i]});
+							}
+							listFiles.labelField="name";
+							listFiles.dataProvider=listC;
+						}
+						
+						if(listFiles.dataProvider!=null){
+							for(var j:int=0;j<listFiles.dataProvider.length;j++){
+								if(listFiles.dataProvider[j].file.nativePath==currentFile.nativePath){
+									listFiles.selectedIndex=j;
+									break;
+								}
+							}
+						}
+					}else{
+						Alert.show("文件不存在");
+					}
+				}
+				//mMask.visible=false;
+			}
+			
+			//拷贝当前操作的文件或文件夹
+			protected function btnCopy_clickHandler(event:MouseEvent):void
+			{
+				var dirTo:File=new File(txtFileRootTo.text);
+				if(dirTo.exists && dirTo.isDirectory){
+					if(currentFile!=null && currentFile.exists){
+						currentFile.copyTo(new File(dirTo.nativePath+"\\"+currentFile.name),true);
+					}
+				}
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//				var fileRootStr:String=txtFileRoot.text;
+				//				readFile(fileRootStr);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List id="listFiles" x="10" y="40" width="261" height="323"
+		 doubleClickEnabled="true"	doubleClick="listFiles_doubleClickHandler(event)"></s:List>
+	<s:TextInput id="txtFileRoot" x="79" y="10" width="742"
+				 text="d:\HC\Internet 临时文件\Content.IE5\index.dat"/>
+	<s:Button id="btnRead" x="864" y="10" label="Read" click="btnRead_clickHandler(event)"/>
+	<s:Button id="btnParent" x="829" y="10" width="27" label="↑"
+			  click="btnParent_clickHandler(event)"/>
+	<s:TextArea id="txtContent" x="279" y="63" width="655" height="300"/>
+	<s:Label id="lblFileSize" x="279" y="40" width="120" height="15"/>
+	<s:TextInput id="txtFileRootTo" x="79" y="375" width="776"
+				 text="F:\IEFILE"/>
+	<s:Button id="btnCopy" x="863" y="376" label="Copy" click="btnCopy_clickHandler(event)"/>
+	<s:Label x="11" y="17" text="文件目录："/>
+	<s:Label x="11" y="380" text="复制目录："/>
+</s:Group>

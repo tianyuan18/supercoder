@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:c="control.*" title="新建地图"
+				  
+				  creationComplete="gamewindow1_creationCompleteHandler(event)" width="365" height="379">
+	
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.STDispatcher;
+			
+			import model.STEvent;
+			
+			import modelBase.Map;
+			
+			import modelExtend.MapExtend;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private var _file:File;
+			private const _mapImageFilter:FileFilter = new FileFilter("Images(*.jpg)","*.jpg");//文件定义
+			
+			private static var _createNewMap:CreateMap;
+			public static function open():CreateMap{
+				if(_createNewMap!=null && _createNewMap.parent!=null){
+					_createNewMap.show();
+				}
+				else{
+					_createNewMap=new CreateMap();
+				}
+				return _createNewMap;
+			}
+			
+			//事件：点击地图背景选择按钮
+			protected function btnChoose_clickHandler(event:MouseEvent):void{
+				_file.browseForOpen("选择地图精细背景图片文件",[_mapImageFilter]);
+			}
+			
+			//事件：背景图片选择完成
+			private function fileSelectHanlder(evet:Event):void{
+				txtMapBGPath.text = _file.nativePath;
+				var imgLoder:Loader=new Loader();
+				imgLoder.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete);
+				imgLoder.load(new URLRequest(_file.nativePath));
+			}
+			
+			private function onComplete(evt:Event):void{
+				
+				var loaderinfo:LoaderInfo=evt.target as  LoaderInfo;
+				if(txtMapWidth.text=="" || txtImgWidth.text==txtMapWidth.text){txtMapWidth.text=loaderinfo.width.toString();}
+				if(txtMapHeight.text=="" || txtMapHeight.text==txtImgHeight.text){txtMapHeight.text=loaderinfo.height.toString();}
+				txtImgWidth.text=loaderinfo.width.toString();
+				txtImgHeight.text=loaderinfo.height.toString();
+				
+				loaderinfo.removeEventListener(Event.COMPLETE,onComplete);
+				loaderinfo=null;
+			}
+			
+			protected function btnOK_clickHandler(event:MouseEvent):void{
+				
+				if(App.proCurrernt==null){
+					Alert.show("项目已关闭或未打开，不能新建地图");
+					this.hide();
+					return;
+				}
+				
+				try{
+					var tmpname:String=this.txtMapName.text;//地图名称 
+					var tmpbg:String=this.txtMapBGPath.text;//地图背景图
+					var tmpmapWidth:int=parseInt(this.txtMapWidth.text);	//地图宽度
+					var tmpmapHeight:int=parseInt(this.txtMapHeight.text);	//地图高度
+					//路点信息
+					var tmpcellWidth:int=parseInt(this.txtCellWidth.text);	
+					var tmpcellHeight:int=parseInt(this.txtCellHeight.text);
+					var tmpcellCol:int=parseInt(this.txtCellCol.text);		
+					var tmpcellRow:int=parseInt(this.txtCellRow.text);		
+					//背景信息
+					var tmptileWidth:int=parseInt(this.txtTileWidth.text);	//单个背景切片宽度
+					var tmptileHeight:int=parseInt(this.txtTileHeight.text);	//单个背景切片高度
+					var tmptileCol:int=parseInt(this.txtTileCol.text);		//地图背景横向切片数量
+					var tmptileRow:int=parseInt(this.txtTileRow.text);		//地图背景纵向切片数量
+					
+					//进行数值判断
+					if(tmpname=="" || tmpname=="请输入地图名称") { Alert.show("请输入地图名称");return;}
+					if(tmpbg=="") { Alert.show("地图背景不可为空");return;}
+					if(tmpmapWidth<100) { Alert.show("地图宽度必须是大于等于100的整数");return;}
+					if(tmpmapHeight<100) { Alert.show("地图高度必须是大于等于100的整数");return;}
+					
+					if(tmpcellWidth<10) { Alert.show("单元格宽度必须是大于等于10的整数");return;}
+					if(tmpcellHeight<10) { Alert.show("单元格高度必须是大于等于10的整数");return;}
+					if(tmpcellCol<=1) { Alert.show("单元格横向数必须是大于等于1的整数");return;}
+					if(tmpcellRow<=1) { Alert.show("单元格纵向数必须大于1的整数");return;}
+					
+					if(tmptileWidth<10) { Alert.show("切片宽度必须是大于等于10的整数");return;}
+					if(tmptileHeight<10) { Alert.show("切片格高度必须是大于等于10的整数");return;}
+					if(tmptileCol<=1) { Alert.show("切片横向数必须是大于等于1的整数");return;}
+					if(tmptileRow<=1) { Alert.show("切片纵向数必须大于1的整数");return;}
+					
+					var newFile:File=new File(App.proCurrernt.pathRoot+"images\\maps\\"+tmpname+"\\bg."+_file.extension);
+					_file.copyTo(newFile,true);
+					
+					var tmpnewMap:MapExtend=new MapExtend();
+					tmpnewMap.dataInit(int(txtID.text),tmpname,tmpmapWidth,tmpmapHeight,
+						tmpcellWidth,tmpcellHeight,tmpcellCol,tmpcellRow,
+						tmptileWidth,tmptileHeight,tmptileCol,tmptileRow,"");
+					
+					STDispatcher.sendEvent(STEvent.MAP_CREATED,tmpnewMap);
+					
+				}
+				catch(ex:Error){
+					Alert.show("请更改应为数值的非数值输入");
+				}
+			}
+			
+			public override function show():void{
+				
+				this.txtID.text=Map.newIndex.toString();
+				this.txtMapName.text="地图"+(Map.newIndex-1000);
+				this.txtMapBGPath.text="";
+				super.show();
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void{
+				this.hide();
+			}
+			
+			protected function gamewindow1_creationCompleteHandler(event:FlexEvent):void{
+				_file = File.desktopDirectory;
+				_file.addEventListener(Event.SELECT,fileSelectHanlder);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:HGroup width="100%" height="11"/>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="地图序号：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtID" width="262" text=""/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="地图名称：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtMapName" width="262" text="请输入地图名称"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="背景路径：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtMapBGPath" width="227" enabled="false"/>
+		<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="背景尺寸：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtImgWidth" enabled="false" width="97"/>
+		<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtImgHeight" enabled="false" width="97"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="地图尺寸：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtMapWidth" width="97"/>
+		<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtMapHeight" width="97"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="单元格尺寸：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtCellWidth" width="97" text="60"/>
+		<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtCellHeight" width="97" text="30"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="单元格数量：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="列数" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtCellCol" enabled="false" text="{int(int(txtMapWidth.text) / int(txtCellWidth.text))}" width="97"/>
+		<s:Label text="行数" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtCellRow" enabled="false" text="{int(int(txtMapHeight.text) / int(txtCellHeight.text)*2)}"  width="97"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="切片尺寸：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="宽度" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtTileWidth" width="97" text="120"/>
+		<s:Label text="高度" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtTileHeight" width="97" text="60"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="切片数量：" height="21" paddingTop="5" width="72"/>
+		<s:Label text="列数" height="21" paddingTop="5" width="25"/>
+		<s:TextInput id="txtTileCol" enabled="false" text="{int(int(txtMapWidth.text) / int(txtTileWidth.text))}"  width="97"/>
+		<s:Label text="行数" height="21" paddingTop="5" width="28"/>
+		<s:TextInput id="txtTileRow" enabled="false" text="{int(int(txtMapHeight.text) / int(txtTileHeight.text))}" width="97"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="缩略图品质：" height="21" paddingTop="5" width="72"/>
+		<s:TextInput id="txtImgQuality" width="265" text="1"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+		<s:Button label="新建"  click="btnOK_clickHandler(event)"/>
+		<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+	</s:HGroup>
+</c:GameMoveWindow>

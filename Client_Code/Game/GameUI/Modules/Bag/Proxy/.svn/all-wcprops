@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Client_Code/!svn/ver/1454/Game/GameUI/Modules/Bag/Proxy
+END
+DealBagUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Bag/Proxy/DealBagUtils.as
+END
+GridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1168/Game/GameUI/Modules/Bag/Proxy/GridManager.as
+END
+CdDataProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Bag/Proxy/CdDataProxy.as
+END
+BagData.as
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Client_Code/!svn/ver/1454/Game/GameUI/Modules/Bag/Proxy/BagData.as
+END
+NetAction.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1218/Game/GameUI/Modules/Bag/Proxy/NetAction.as
+END
+GridUnit.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Bag/Proxy/GridUnit.as
+END

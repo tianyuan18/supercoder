@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/3.1">
+	<id>MainFrame</id>
+	<filename>hhh</filename>
+	<name>hhh</name>
+	<versionNumber>0.0.0</versionNumber>
+	<initialWindow>
+		<content>[此值将由 Flash Builder 在输出 app.xml 中覆盖]</content>
+	<autoOrients>true</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>false</visible>
+        <softKeyboardBehavior>none</softKeyboardBehavior>
+    </initialWindow>
+</application>

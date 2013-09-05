@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Client_Code/!svn/ver/1074/Game/GameUI/Modules/Pet/Proxy
+END
+PetEquipGridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1074/Game/GameUI/Modules/Pet/Proxy/PetEquipGridManager.as
+END
+PetNetAction.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/1034/Game/GameUI/Modules/Pet/Proxy/PetNetAction.as
+END
+PetCombinGridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/502/Game/GameUI/Modules/Pet/Proxy/PetCombinGridManager.as
+END
+PetSkillGridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/314/Game/GameUI/Modules/Pet/Proxy/PetSkillGridManager.as
+END
+PetLearnSkillGridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1055/Game/GameUI/Modules/Pet/Proxy/PetLearnSkillGridManager.as
+END

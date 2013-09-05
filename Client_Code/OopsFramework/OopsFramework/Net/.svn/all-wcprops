@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Client_Code/!svn/ver/68/OopsFramework/OopsFramework/Net
+END
+BaseSocket.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/68/OopsFramework/OopsFramework/Net/BaseSocket.as
+END
+BaseSocketEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/Net/BaseSocketEvent.as
+END
+BaseHttp.as
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Client_Code/!svn/ver/1/OopsFramework/OopsFramework/Net/BaseHttp.as
+END

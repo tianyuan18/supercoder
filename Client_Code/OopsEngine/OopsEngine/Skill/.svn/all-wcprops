@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Client_Code/!svn/ver/1336/OopsEngine/OopsEngine/Skill
+END
+GameSkillMode.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/562/OopsEngine/OopsEngine/Skill/GameSkillMode.as
+END
+SkillAnimation.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/513/OopsEngine/OopsEngine/Skill/SkillAnimation.as
+END
+GameSkillLevel.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/OopsEngine/OopsEngine/Skill/GameSkillLevel.as
+END
+GameSkillResource.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/495/OopsEngine/OopsEngine/Skill/GameSkillResource.as
+END
+GameSkillData.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/322/OopsEngine/OopsEngine/Skill/GameSkillData.as
+END
+GameAudioResource.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/1/OopsEngine/OopsEngine/Skill/GameAudioResource.as
+END
+JobGameSkill.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1336/OopsEngine/OopsEngine/Skill/JobGameSkill.as
+END
+GameSkillEffect.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1/OopsEngine/OopsEngine/Skill/GameSkillEffect.as
+END
+GameSkill.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/699/OopsEngine/OopsEngine/Skill/GameSkill.as
+END
+SkillModeVO.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/513/OopsEngine/OopsEngine/Skill/SkillModeVO.as
+END
+GameSkillBuff.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/OopsEngine/OopsEngine/Skill/GameSkillBuff.as
+END
+WeirdyGameSkill.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1/OopsEngine/OopsEngine/Skill/WeirdyGameSkill.as
+END

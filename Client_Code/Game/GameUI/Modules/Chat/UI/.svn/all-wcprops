@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Client_Code/!svn/ver/1197/Game/GameUI/Modules/Chat/UI
+END
+ItemLinkEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/UI/ItemLinkEvent.as
+END
+ChatCellEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/UI/ChatCellEvent.as
+END
+FaceText.as
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/UI/FaceText.as
+END
+ChatCellText.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/1197/Game/GameUI/Modules/Chat/UI/ChatCellText.as
+END
+TextLinkEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/UI/TextLinkEvent.as
+END
+TextFieldColor.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Chat/UI/TextFieldColor.as
+END

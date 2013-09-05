@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/4/mapCode/SwfPro/src/com/danke8/swfpro/pshape/pshaperecord/pedge
+END
+EdgeRecord.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/Client_Code/!svn/ver/4/mapCode/SwfPro/src/com/danke8/swfpro/pshape/pshaperecord/pedge/EdgeRecord.as
+END
+StraightEdgeRecord.as
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/Client_Code/!svn/ver/4/mapCode/SwfPro/src/com/danke8/swfpro/pshape/pshaperecord/pedge/StraightEdgeRecord.as
+END
+CurvedEdgeRecord.as
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/Client_Code/!svn/ver/4/mapCode/SwfPro/src/com/danke8/swfpro/pshape/pshaperecord/pedge/CurvedEdgeRecord.as
+END

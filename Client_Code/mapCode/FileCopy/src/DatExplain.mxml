@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="1000" height="410" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.AIREvent;
+			import mx.events.FlexEvent;
+			
+			import org.osmf.events.TimeEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//当前操作文件
+ 
+			//缓存里的文件系统文件列表
+			protected var files:Array=[];
+			protected var iFiles:ArrayCollection=new ArrayCollection();
+			protected var indexDataFile:File;
+			protected var outList:Array=new Array();
+			 
+			private var timer:Timer;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				timer=new Timer(50)
+				timer.addEventListener(TimerEvent.TIMER,onTimer);
+				
+			}
+			 
+			public function show(fileIndexDat:File):Boolean{
+				
+				indexDataFile=fileIndexDat;
+				txtFileRoot.text=indexDataFile.nativePath;
+				visible=true;
+				btnTest_clickHandler(null);
+				return true;
+			}
+			
+			
+			protected function getAllFiles(file:File):void{
+				
+				if(file.isDirectory){
+					var list:Array=file.getDirectoryListing();
+					for(var i:int=0;i<list.length;i++){
+						getAllFiles(list[i]);
+					}
+				}else{
+					files.push(file);
+				}
+			} 
+			
+			public var iData:Object={head:""}
+			
+			protected function btnTest_clickHandler(event:MouseEvent):void
+			{
+				
+				var fushu:Number=0;
+				var error:Number=0;
+				
+				var objList:ArrayCollection=new ArrayCollection();
+				
+				// TODO Auto-generated method stub
+				if(indexDataFile.exists && !indexDataFile.isDirectory){
+					var fileStream:FileStream = new FileStream();
+					fileStream.open(indexDataFile, FileMode.READ);
+					if(indexDataFile.size<28){
+						return;
+					}
+					var head:String=fileStream.readMultiByte(28,"GB2312");
+					if(head!="Client UrlCache MMF Ver 5.2"){
+						return ;
+					}
+					
+					
+					var fileLen:int=readInt(fileStream,4);
+					var hashP:Number=readInt(fileStream,4);
+					var hashList:Array=new Array();
+					while(hashP!=0){
+						fileStream.position=hashP;
+						var hSign:String=fileStream.readMultiByte(4,"GB2312");
+						if(hSign=="HASH"){
+							var hash:Object={};
+							hash.p=hashP;
+							hash.len=readInt(fileStream,4);
+							hash.nextP=hashP=readInt(fileStream,4);
+							hash.unknow=readInt(fileStream,4);
+							hash.items=[];
+							var hasItem:Boolean=true;
+							while(hasItem){
+								
+								var sign:Number=readInt(fileStream,4);
+								if(sign==0x00000000){
+									hasItem=false;
+								}else{
+									var index:Number=readInt(fileStream,4);
+									if(sign==0x00000003 || sign==0xbadf00d ){
+										//无效的地址	
+									}else{
+										if(index>0){
+											hash.items.push(index);
+										}else{
+											fushu++;
+										}
+										
+									}
+								}
+							}
+							hashList.push(hash);
+						}else{
+							hashP=0;
+						}
+					}
+					
+					for(var i:int=0;i<hashList.length;i++){
+						for(var j:int=0;j<hashList[i].items.length;j++){trace(i+","+j);
+							try{
+								if(hashList[i].items[j]<=0 || Number(hashList[i].items[j])>=Number(indexDataFile.size)){
+									var xx:int=0;
+								}
+								
+								fileStream.position=hashList[i].items[j];
+								var type:String=fileStream.readMultiByte(4,"GB2312");
+								var obj:Object={};
+								if(type=="URL "){
+									obj.len=readInt(fileStream,4)*0x80;
+									obj.eidtTime=fileStream.readDouble();
+									obj.accessTime=fileStream.readDouble();
+									
+									fileStream.position=hashList[i].items[j]+0x34;
+									obj.urlP=readInt(fileStream,4);
+									
+									fileStream.position=hashList[i].items[j]+0x3C;
+									obj.nameP=readInt(fileStream,4);
+									
+									fileStream.position=hashList[i].items[j]+0x44;
+									obj.typeP=readInt(fileStream,4);
+									obj.typeLen=readInt(fileStream,4);
+									fileStream.position=hashList[i].items[j]+obj.typeP;
+									obj.type=fileStream.readMultiByte(obj.typeLen,"GB2312");
+									
+									fileStream.position=hashList[i].items[j]+obj.urlP;
+									obj.urlLen=obj.nameP-obj.urlP;
+									if(obj.urlLen>0){
+										obj.url=fileStream.readMultiByte(obj.urlLen,"GB2312");
+										if(obj.url.length>7){
+											var tmpUrl:String=obj.url.replace("http://","");
+											var tmpIndex:int=tmpUrl.indexOf("/");
+											if(tmpIndex>0){
+												tmpUrl=tmpUrl.substring(0,tmpIndex);
+											}
+											obj.web=tmpUrl;
+										}else{
+											obj.web="unKnow Web";
+										}
+									}
+									
+									fileStream.position=hashList[i].items[j]+obj.nameP;
+									obj.nameLen=obj.typeP-obj.nameP;
+									if(obj.nameLen>0){
+										obj.name=fileStream.readMultiByte(obj.nameLen,"GB2312");
+									}
+									
+									fileStream.position=hashList[i].items[j]+0x54;
+									obj.accessCount=readInt(fileStream,4);
+									objList.addItem(obj);
+									
+								}else if(type=="LEAK"){
+									
+								}else if(type=="REDR"){
+									
+								}	
+							}catch(e:Error){
+								error++;
+							}
+						}
+						var x:int=0;
+					}
+					listPages.labelField="name";
+					listPages.dataProvider=iFiles=objList;
+					lblCount.text="数量统计："+objList.length;
+					
+					lblVesion.text=head+", 文件长度："+(fileLen/1000000)+", hash1偏移："+hashP.toString(16)+"，负数地址："+fushu+",异常："+error;
+				}
+				mMask.visible=false;
+			}
+			
+			protected function readInt(fileStream:FileStream,c:int):int{
+				var x:int=1;
+				var num:Number=0;
+				for(var i:int=0;i<c;i++){
+					var tmp:uint=fileStream.readUnsignedByte();
+					num+=tmp*x;
+					x*=256;
+				}
+				return num;
+			}
+			
+			protected function listPages_changeHandler(event:IndexChangeEvent):void
+			{
+				var item:Object=listPages.selectedItem;
+				if(item!=null){
+					lblFileInfo.text="归属于网站："+item.web;
+					lblFileInfo.text+="\n地址："+item.url+"\n+类型："+item.type;
+					for(var j:int=0;j<files.length;j++){
+						if(files[j].name==item.name){
+							item.file=files[j];
+						}
+					}
+					
+					if(item.file!=null){
+						lblFileInfo.text+="\n文件路径："+item.file.nativePath;
+					}
+				}
+			}
+			
+			protected function btnFilter_clickHandler(event:MouseEvent):void
+			{
+				if(iFiles!=null){
+					var arr:ArrayCollection=new ArrayCollection();
+					for(var i:int=0;i<iFiles.length;i++){
+						var item:Object=iFiles[i];
+						if(item.url.indexOf(txtFilter.text)>-1){
+							
+							arr.addItem(item);
+						}
+					}
+					listPages.dataProvider=arr;
+					lblCount.text="数量统计："+arr.length;
+				}
+			}
+			
+			protected function btnLoadFile_clickHandler(event:MouseEvent):void
+			{
+				if(indexDataFile!=null){
+					files=[];
+					getAllFiles(indexDataFile.parent);
+					lblFCount.text="文件系统数量："+files.length
+				}
+			}
+			
+			
+			
+			protected function btnOutput_clickHandler(event:MouseEvent):void
+			{
+				
+				if(listPages.dataProvider!=null && listPages.dataProvider.length>0){
+					
+					outList=[];
+					for(var i:int=0;i<listPages.dataProvider.length;i++){
+						
+						outList.push(listPages.dataProvider[i]);
+					}
+					lblMsg.text="正在导出文件："+outList[0].name;
+					JinduIndex.width=JinduBack.width-(JinduBack.width*outList.length/listPages.dataProvider.length);
+					isLoad=false;
+					timer.stop();
+					timer.start();
+					mMask.visible=true;
+				}
+				
+			}
+			private var isLoad:Boolean=false;
+			protected function onTimer(evt:TimerEvent):void{
+				
+				if(isLoad){
+					return;
+				}
+				isLoad=true;
+				if(outList.length>0){
+					
+					for(var i:int=0;i<files.length;i++){
+						if(files[i].name==outList[0].name){
+							outList[0].file=files[i];
+						}
+					}
+					if(outList[0].file!=null && outList[0].file.exists){
+						var url:String=outList[0].url.replace("http://","");
+						url="\\"+url.replace(new RegExp("\/","g"),"\\");
+						url=txtFileRootTo.text+url;
+						var fileName:String=outList[0].name;
+						fileName=fileName.replace("[1]","").replace("[2]","").replace("[3]","").replace("[4]","");
+						
+						var tmpIndex:int=url.indexOf("\\"+fileName);
+						if(tmpIndex==-1){
+							tmpIndex=url.indexOf("\\"+fileName.substring(0,fileName.indexOf(".")));
+						}
+						if(tmpIndex==-1){
+							tmpIndex=url.lastIndexOf("\\");;
+						}
+						url=url.substring(0,tmpIndex+1)+fileName;
+						try{
+							outList[0].file.copyTo(new File(url),true);
+						}catch(e:Error){
+							
+						}
+					} 
+					outList.shift();
+					isLoad=false;
+					if(outList.length>0){
+						JinduIndex.width=JinduBack.width-(JinduBack.width*outList.length/listPages.dataProvider.length);
+						lblMsg.text="正在导出文件："+outList[0].name;
+					}else{
+						timer.stop();
+						mMask.visible=false;
+					}
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="260" text="导出目录："/>
+	<s:TextInput id="txtFileRoot" x="79" y="10" width="809" editable="false"/>
+	<s:Label x="11" y="17" text="文件路径："/>
+	<s:TextInput id="txtFileRootTo" x="78" y="254" width="834"
+				 text="F:\IEFILE"/>
+	<s:Button id="btnTest" x="896" y="10" label="提取index.dat" click="btnTest_clickHandler(event)"/>
+	<s:Label x="10" y="40" text="文件格式版本："/>
+	<s:Label id="lblVesion" x="102" y="40" width="647" text="xxx"/>
+	<s:List id="listPages" x="10" y="82" width="261" height="139"
+			change="listPages_changeHandler(event)"></s:List>
+	<s:TextInput id="txtFilter" x="10" y="53" width="125"/>
+	<s:Button id="btnFilter" x="143" y="53" width="48" label="过滤"
+			  click="btnFilter_clickHandler(event)"/>
+	<s:Label id="lblCount" x="10" y="229"/>
+	<s:Button id="btnLoadFile" x="199" y="53" width="72" label="加载文件"
+			  click="btnLoadFile_clickHandler(event)"/>
+	<s:Label id="lblFCount" x="143" y="229"/>
+	<s:TextArea id="lblFileInfo" x="279" y="54" width="711" height="167"/>
+	<s:Button id="btnOutput" x="920" y="254" label="导出" click="btnOutput_clickHandler(event)"/>
+	<s:BorderContainer id="mMask" x="0" y="0" width="1000" height="410" backgroundColor="0x000000" alpha="0.9" visible="true">
+		<s:BorderContainer id="JinduBack" x="20" y="300" width="960" height="30"
+						   backgroundColor="0x555555">
+			<s:BorderContainer id="JinduIndex" x="0" y="0" width="0" height="30"
+							   backgroundColor="0x00ff00">
+				
+			</s:BorderContainer>
+		</s:BorderContainer>
+		<s:Label id="lblMsg" x="116" y="274" width="475" color="0xffffff" fontFamily="中易宋体"
+				 fontSize="16" text="正在加载中 。。。"/>
+	</s:BorderContainer>
+	
+</s:Group>

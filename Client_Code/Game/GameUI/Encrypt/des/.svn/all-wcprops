@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Encrypt/des
+END
+ISymmetricKey.as
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Encrypt/des/ISymmetricKey.as
+END
+DESKey.as
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Encrypt/des/DESKey.as
+END
+Hex.as
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Encrypt/des/Hex.as
+END
+Memory.as
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Encrypt/des/Memory.as
+END

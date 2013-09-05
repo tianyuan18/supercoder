@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:c="control.*"
+		 title="新建项目"
+		  width="361" height="185">
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.STDispatcher;
+			
+			import flashx.textLayout.formats.Direction;
+			
+			import model.STEvent;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private static var _createProject:CreateProject;
+			private var _file:File=File.applicationDirectory;	
+			
+			public static function open():CreateProject{
+				if(_createProject!=null && _createProject.parent!=null){
+					_createProject.show();
+				}
+				else{
+					_createProject=new CreateProject();
+				}
+				return _createProject;
+			}
+			
+			//重写方法：显示（打开）窗体
+			public override function show():void{
+				txtProName.text="";
+				txtProPath.text="";
+				super.show();
+			}
+			
+			//事件：点击取消按钮
+			protected function btnCancel_clickHandler(event:MouseEvent):void{
+				hide();
+			}
+			
+			//事件：点击项目目录选择按钮
+			protected function btnChoose_clickHandler(event:MouseEvent):void{
+				_file.browseForDirectory("选择项目保存路径");
+				_file.addEventListener(Event.SELECT,fileSelectHanlder);
+			}
+			
+			//事件：项目目录选择完毕
+			private function fileSelectHanlder(evet:Event):void{
+				txtProPath.text= _file.nativePath;
+			}
+
+			//事件：提交
+			protected function btnOK_clickHandler(event:MouseEvent):void{
+				if(txtProName.text==""){
+					Alert.show("请输入项目名称");
+					return;
+				}
+				
+				if(txtProPath.text==""){
+					Alert.show("请选择项目路径");
+					return;
+				}
+				
+				//创建项目基本信息
+			    var resultStr:String=App.createPro(txtProPath.text,txtProName.text);
+				if(resultStr!=null){
+					Alert.show(resultStr);
+				}
+				else{
+					STDispatcher.sendEvent(STEvent.PROJECT_CREATED,null);
+					hide();
+					this.callLater(laterOpen);
+				}
+			}
+			
+			//事件：创建完成 过一会再打开
+			private function laterOpen():void{
+				App.openPro(txtProPath.text+"\\"+txtProName.text+"\\"+txtProName.text+"."+App.PROEXTENSION);
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+		<s:VGroup width="100%" height="100%">
+			<s:HGroup width="100%" height="24"/>
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				<s:Label text="项目名称：" height="21" paddingTop="5" width="70"/>
+				<mx:TextInput id="txtProName" width="227"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+				<s:Label text="项目路径：" height="21" paddingTop="5" width="70"/>
+				<mx:TextInput id="txtProPath" width="227"/>
+				<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+				<s:Button label="确定"  click="btnOK_clickHandler(event)"/>
+				<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+			</s:HGroup>
+		</s:VGroup>
+</c:GameMoveWindow>

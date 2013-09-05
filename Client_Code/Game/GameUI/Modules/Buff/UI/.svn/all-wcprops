@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Client_Code/!svn/ver/836/Game/GameUI/Modules/Buff/UI
+END
+DeBuffController.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Buff/UI/DeBuffController.as
+END
+BuffUI.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Buff/UI/BuffUI.as
+END
+BuffItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Client_Code/!svn/ver/836/Game/GameUI/Modules/Buff/UI/BuffItem.as
+END
+BuffController.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/738/Game/GameUI/Modules/Buff/UI/BuffController.as
+END
+DeBuffItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Buff/UI/DeBuffItem.as
+END

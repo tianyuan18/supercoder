@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/1584/Game/GameUI/Modules/PlayerInfo/UI
+END
+TeamList.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/UI/TeamList.as
+END
+EquipmentItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1200/Game/GameUI/Modules/PlayerInfo/UI/EquipmentItem.as
+END
+TeamCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Client_Code/!svn/ver/1584/Game/GameUI/Modules/PlayerInfo/UI/TeamCell.as
+END
+HeadImgList.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/747/Game/GameUI/Modules/PlayerInfo/UI/HeadImgList.as
+END
+ImgCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Client_Code/!svn/ver/747/Game/GameUI/Modules/PlayerInfo/UI/ImgCell.as
+END

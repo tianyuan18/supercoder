@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI
+END
+TreaTextCell.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI/TreaTextCell.as
+END
+TreaGridUnit.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI/TreaGridUnit.as
+END
+ChatArea.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI/ChatArea.as
+END
+StaticGridGroup.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI/StaticGridGroup.as
+END
+TreaGridManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/IdentifyTreasure/UI/TreaGridManager.as
+END

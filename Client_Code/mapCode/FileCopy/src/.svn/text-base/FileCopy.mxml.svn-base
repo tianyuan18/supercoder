@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="1000" height="430" xmlns:local="*" creationComplete="windowedapplication1_creationCompleteHandler(event)" >
+	
+	<fx:Script>
+		<![CDATA[
+			import event.EventFileFinding;
+			
+			import mx.events.FlexEvent;
+			
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				fileFinding.visible=true;
+				fileFinding.addEventListener(EventFileFinding.IndexDatFinding,onFileFinding);
+			}
+			
+			protected function onFileFinding(evt:EventFileFinding):void{
+				
+				if(datExplain.show(evt.fileStr)){
+					fileFinding.visible=false;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<local:FileFinding id="fileFinding" visible="false"/>
+	<local:DatExplain id="datExplain" visible="false" />
+</s:WindowedApplication>

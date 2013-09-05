@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect
+END
+MovePoint.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/MovePoint.as
+END
+CycleComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/CycleComponent.as
+END
+MoveToEffect.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/MoveToEffect.as
+END
+Vector2D.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/Vector2D.as
+END
+VirtualContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/VirtualContainer.as
+END
+CDUpdateComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/View/Components/MoveEffect/CDUpdateComponent.as
+END

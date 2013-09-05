@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/PlayerInfo/Mediator
+END
+PlayerDetailInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Client_Code/!svn/ver/1451/Game/GameUI/Modules/PlayerInfo/Mediator/PlayerDetailInfoMediator.as
+END
+TeamListInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/PlayerInfo/Mediator/TeamListInfoMediator.as
+END
+PetInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/601/Game/GameUI/Modules/PlayerInfo/Mediator/PetInfoMediator.as
+END
+CounterWorkerInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/PlayerInfo/Mediator/CounterWorkerInfoMediator.as
+END
+SelfInfoMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1507/Game/GameUI/Modules/PlayerInfo/Mediator/SelfInfoMediator.as
+END

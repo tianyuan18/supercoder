@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Client_Code/!svn/ver/1327/Game/GameUI/Modules/Maket/UI
+END
+MarketGoodsItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/MarketGoodsItem.as
+END
+MarketItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/MarketItem.as
+END
+MarketUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/MarketUtils.as
+END
+MarketPrivilegeManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/MarketPrivilegeManager.as
+END
+ComBoxItem.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/ComBoxItem.as
+END
+Combox.as
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/Combox.as
+END
+ComboxEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/ComboxEvent.as
+END
+MarketUIManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Maket/UI/MarketUIManager.as
+END

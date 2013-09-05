@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/Client_Code/!svn/ver/1614/Game
+END
+GameInit.as
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/Client_Code/!svn/ver/1584/Game/GameInit.as
+END
+LoadInterface.as
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/Client_Code/!svn/ver/1611/Game/LoadInterface.as
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/Client_Code/!svn/ver/1536/Game/.project
+END
+GameRoleManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/Client_Code/!svn/ver/1584/Game/GameRoleManager.as
+END
+GameConfigData.as
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/Client_Code/!svn/ver/1611/Game/GameConfigData.as
+END
+Game.as
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/Client_Code/!svn/ver/1536/Game/Game.as
+END
+.actionScriptProperties
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Client_Code/!svn/ver/1536/Game/.actionScriptProperties
+END
+GameCommonData.as
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/Client_Code/!svn/ver/1603/Game/GameCommonData.as
+END

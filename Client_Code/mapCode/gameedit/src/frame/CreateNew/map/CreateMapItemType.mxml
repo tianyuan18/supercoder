@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:c="control.*" title="新建地图Item类型" visible="true"
+				  width="362" height="387" creationComplete="gamemovewindow_creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.MapUtils;
+			import common.STDispatcher;
+			
+			import control.BaseAnimeObject;
+			import control.BaseBmpDataCollection;
+			import control.ImgBmpDataCollection;
+			import control.SwfBmpDataCollection;
+			
+			import event.EventData;
+			
+			import model.STEvent;
+			
+			import modelBase.MapItemType;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.PNGEncoder;
+			[Embed(source="images/person.png")]
+			public var Person:Class;
+			
+			
+			
+			[Embed(source="images/npcRoles.png")]
+			public var iconMapItemType:Class;
+			
+			//地图物品图标
+			[Embed(source="images/npcRole.png")]
+			public var iconMapItem:Class;
+			
+			private static var _createMapItemType:CreateMapItemType;
+			private const VIEWIMGFILTER:FileFilter = new FileFilter("Images(*.swf)","*.swf;*.png");
+			private const ICONIMGFILTER:FileFilter = new FileFilter("Images(*.png)","*.png");
+			
+			private var _viewImgFile:File;
+			private var _iconImgFile:File;
+			private var _iconChildFile:File;
+			
+			
+			private var viewImgBmp:Bitmap=new Bitmap();
+			private var iconImgBmp:Bitmap=new Bitmap();
+			private var iconChildBmp:Bitmap=new Bitmap();
+	
+			public static function open():CreateMapItemType{
+				if(_createMapItemType!=null && _createMapItemType.parent!=null){
+					_createMapItemType.show();
+				}
+				else{
+					_createMapItemType=new CreateMapItemType();
+				}
+				return _createMapItemType;
+			}
+			
+			public override function show():void{
+				txtID.text=MapItemType.newIndex.toString();
+				txtName.text="";
+				txtViewImg.text=""
+				txtIcon.text="";
+				txtIconChild.text="";
+				
+				iconImgBmp.bitmapData=new iconMapItemType().bitmapData;
+				iconImgBmp.x=100;
+				iconImgBmp.y=2;
+				
+				iconChildBmp.bitmapData=new iconMapItem().bitmapData;
+				iconChildBmp.x=120;
+				iconChildBmp.y=5;
+				
+				viewImgBmp.bitmapData=new Person().bitmapData;
+				viewImgBmp.x=170-(viewImgBmp.width/2);
+				viewImgBmp.y=2-viewImgBmp.height;
+				super.show();
+			}
+			
+			public override function hide():void
+			{
+				txtViewImg.text="";
+				txtViewImg.text="";
+				super.hide();
+			}
+			
+			protected function btnOK_clickHandler(event:MouseEvent):void{
+				
+				//var tmpID:int=MapItemType.newIndex;
+				//游戏元素改成可以修改的序号，暂时定义只能是int类型，可根据游戏再做修改，否则会出错； biboy_2012_8_27
+				var tmpID:int= int(txtID.text.toString());
+				var tmpname:String=txtName.text;
+				var tmpPath:String=txtViewImg.text;
+				var tmpDesc:String=txtDesc.text;
+				var tmpTargett:String=MapUtils.removeTarget(txtTargett.text);
+				
+				//进行数值判断
+				if(tmpname=="" || tmpname=="请输元素入名称") { Alert.show("请输入元素名称");return;}
+				
+				var pngEncoder:PNGEncoder=new PNGEncoder();
+				var bytesS:ByteArray=pngEncoder.encode(viewImgBmp.bitmapData);
+				var newFile:File=new File(App.proCurrernt.pathRoot+"images\\mapItemType\\"+tmpID+".png");
+				var fsS:FileStream = new FileStream();
+				fsS.openAsync(newFile,FileMode.WRITE);
+				fsS.writeBytes(bytesS);
+				fsS.close();
+				bytesS=pngEncoder.encode(iconImgBmp.bitmapData);
+				newFile=new File(App.proCurrernt.pathRoot+"images\\mapItemType\\"+tmpID+"icon.png");
+				_iconImgFile.copyTo(newFile,true);
+				fsS.openAsync(newFile,FileMode.WRITE);
+				fsS.writeBytes(bytesS);
+				fsS.close();
+				bytesS=pngEncoder.encode(iconChildBmp.bitmapData);
+				newFile=new File(App.proCurrernt.pathRoot+"images\\mapItemType\\"+tmpID+"iconChild.png");
+				_iconChildFile.copyTo(newFile,true);
+				fsS.openAsync(newFile,FileMode.WRITE);
+				fsS.writeBytes(bytesS);
+				fsS.close();
+				var tmpMapItemType:MapItemType=new MapItemType();
+				
+				tmpMapItemType.dataInit(tmpID,tmpname,tmpDesc,tmpTargett);
+				if(effectBox.selected)
+				{
+					tmpMapItemType.width=viewImgBmp.bitmapData.width;
+					tmpMapItemType.height=viewImgBmp.bitmapData.height;
+					tmpMapItemType.type="MapEffect";
+				}
+				STDispatcher.sendEvent(STEvent.MAP_ITEMTYPE_CREATED,tmpMapItemType);
+				hide();
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void{
+				hide();
+			}
+			
+			protected function btnChoose_clickHandler(evt:MouseEvent):void{
+				if(evt.target==btnViewImg){
+					_viewImgFile.browseForOpen("选择元素的显示素材",[VIEWIMGFILTER]);
+				}else if(evt.target==btnIcon){
+					_iconImgFile.browseForOpen("选择元素的图标",[ICONIMGFILTER]);
+				}else if(evt.currentTarget==btnIconChild){
+					_iconChildFile.browseForOpen("选择元素的实例图标",[ICONIMGFILTER]);
+				}
+			}
+			 
+			protected function btnChooseViewImgCancel_clickHandler(event:MouseEvent):void{
+				txtViewImg.text=""
+				viewImgBmp.bitmapData=null;
+			}
+			
+			protected function btnChooseIconImgCancel_clickHandler(event:MouseEvent):void{
+				txtIcon.text="";
+				iconImgBmp.bitmapData=null;
+			}
+			
+			protected function btnChooseIconChildCancel_clickHandler(event:MouseEvent):void{
+				txtIconChild.text="";
+				iconChildBmp.bitmapData=null;
+			}
+			
+			protected function gamemovewindow_creationCompleteHandler(event:FlexEvent):void{
+				
+				_viewImgFile = File.desktopDirectory;
+				_viewImgFile.addEventListener(Event.SELECT,fileSelectHanlder);
+				
+				_iconImgFile = File.desktopDirectory;
+				_iconImgFile.addEventListener(Event.SELECT,fileSelectHanlder);
+				
+				_iconChildFile=File.desktopDirectory;
+				_iconChildFile.addEventListener(Event.SELECT,fileSelectHanlder);
+				
+				this.lbl.addChild(viewImgBmp);
+				this.lbl.addChild(iconImgBmp);
+				this.lbl.addChild(iconChildBmp);
+			}
+			
+			//事件：背景图片选择完成
+			private function fileSelectHanlder(evet:Event):void{
+				if(evet.target==_viewImgFile){
+					var loader:Loader=new Loader();
+					loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt1:Event):void{
+						viewImgBmp.bitmapData=((evt1.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+					});
+					loader.load(new URLRequest(_viewImgFile.nativePath));
+					txtViewImg.text = _viewImgFile.nativePath;
+					
+				}else if(evet.target==_iconImgFile){
+					var loader2:Loader=new Loader();
+					loader2.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt2:Event):void{
+						iconImgBmp.bitmapData=((evt2.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+					});
+					loader2.load(new URLRequest(_iconImgFile.nativePath));
+					txtIcon.text = _iconImgFile.nativePath;
+				}else if(evet.target==_iconChildFile){
+					var loader3:Loader=new Loader();
+					loader3.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt3:Event):void{
+						iconChildBmp.bitmapData=((evt3.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+					});
+					loader3.load(new URLRequest(_iconChildFile.nativePath));
+					txtIconChild.text = _iconChildFile.nativePath;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Group height="1" width="100%">
+		<s:Label text="" id="lblHeadImg" left="185" top="-42"/>
+	</s:Group>
+	<s:HGroup width="100%" height="16" id="RRRR" paddingLeft="0" paddingTop="2">
+		<s:Label text="" id="lbl" paddingLeft="0" width="79"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="序号：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtID" width="262" editable="true"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="名称：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtName" width="262" text="请输元素入名称"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="介绍：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtDesc" width="262"  />
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="显示素材：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtViewImg" width="189" editable="false"/>
+		<s:Button id="btnViewImg" label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		<s:Button label="X" width="30" click="btnChooseViewImgCancel_clickHandler(event)"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="节点图标：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtIcon" width="189" editable="false"/>
+		<s:Button id="btnIcon" label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		<s:Button label="X" width="30" click="btnChooseIconImgCancel_clickHandler(event)"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="子节图标：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtIconChild" width="189" editable="false"/>
+		<s:Button id="btnIconChild" label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		<s:Button label="X" width="30" click="btnChooseIconChildCancel_clickHandler(event)"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="72" paddingLeft="10" paddingTop="1">
+		<s:Label text="导出标签：" height="21" paddingTop="5" width="72"/>
+		<s:TextArea id="txtTargett" width="262" height="68"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="28" paddingLeft="10" paddingTop="1">
+		<s:Label text="类型：" height="21" paddingTop="5" width="72"/>
+		<s:CheckBox id="npcBox" label="NPC"  height="20" width="50"/>
+		<s:CheckBox id="effectBox" label="地效" height="20" width="50"/>
+		<s:CheckBox id="trapBox" label="陷阱" height="20" width="50"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+		<s:Button label="新建"  click="btnOK_clickHandler(event)"/>
+		<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+	</s:HGroup>
+</c:GameMoveWindow>

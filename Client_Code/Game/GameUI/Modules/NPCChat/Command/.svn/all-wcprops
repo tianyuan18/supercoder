@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Client_Code/!svn/ver/1573/Game/GameUI/Modules/NPCChat/Command
+END
+SendNPCMsgCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/NPCChat/Command/SendNPCMsgCommand.as
+END
+SelectedNPCCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/1573/Game/GameUI/Modules/NPCChat/Command/SelectedNPCCommand.as
+END
+ReceiveNPCMsgCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/NPCChat/Command/ReceiveNPCMsgCommand.as
+END
+TranslateToUnity.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/NPCChat/Command/TranslateToUnity.as
+END
+NPCChatComList.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/NPCChat/Command/NPCChatComList.as
+END

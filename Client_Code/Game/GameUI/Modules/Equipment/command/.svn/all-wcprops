@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Equipment/command
+END
+EquipCommandList.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Equipment/command/EquipCommandList.as
+END
+ComposeCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Equipment/command/ComposeCommand.as
+END
+AddEquipDoubleCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Equipment/command/AddEquipDoubleCommand.as
+END
+StilettoEquipCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Equipment/command/StilettoEquipCommand.as
+END

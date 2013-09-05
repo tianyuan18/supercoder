@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx" 
+						xmlns:control="control.*" title="路点操作"
+						layout="absolute" width="350" height="146" creationComplete="gamemovewindow1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			
+			import frame.ProjectWindow.WindowMap;
+			
+			import model.CellType;
+			import model.EditType;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var _windowMap:WindowMap;
+			
+			private static var _windowRoadOperate:WindowMapRoadOperate;
+			public static function open():WindowMapRoadOperate{
+				if(_windowRoadOperate==null){
+					_windowRoadOperate=new WindowMapRoadOperate();
+				}else if(_windowRoadOperate.parent!=null){
+					_windowRoadOperate.show();
+				}
+				return _windowRoadOperate;
+			}
+			public static function get isShow():Boolean{
+				if(_windowRoadOperate!=null && _windowRoadOperate.parent!=null && _windowRoadOperate.visible){
+					return true;
+				}
+				return false;
+			}
+				
+			
+			protected function gamemovewindow1_creationCompleteHandler(event:FlexEvent):void{ 
+				btnRoad.graphics.clear();
+				btnRoad.graphics.beginFill(0x111111);
+				btnRoad.graphics.drawCircle(10,10,6);
+				btnRoad.graphics.endFill();
+				
+				btnRoad.graphics.beginFill(CellType.ROAD_COLOR,0);
+				btnRoad.graphics.drawCircle(10,10,5);
+				btnRoad.graphics.endFill();
+				
+				btnBarrier.graphics.clear();
+				btnBarrier.graphics.beginFill(0x111111);
+				btnBarrier.graphics.drawCircle(10,10,6);
+				btnBarrier.graphics.endFill();
+				
+				btnBarrier.graphics.beginFill(CellType.BARRIER_COLOR);
+				btnBarrier.graphics.drawCircle(10,10,5);
+				btnBarrier.graphics.endFill();
+				
+				btnMask.graphics.clear();
+				btnMask.graphics.beginFill(0x111111);
+				btnMask.graphics.drawCircle(10,10,6);
+				btnMask.graphics.endFill();
+				btnMask.graphics.beginFill(CellType.MASK_COLOR);
+				btnMask.graphics.drawCircle(10,10,5);
+				btnMask.graphics.endFill();
+				
+				btnTrap.graphics.clear();
+				btnTrap.graphics.beginFill(0x111111);
+				btnTrap.graphics.drawCircle(10,10,6);
+				btnTrap.graphics.endFill();
+				btnTrap.graphics.beginFill(CellType.TRAP_COLOR);
+				btnTrap.graphics.drawCircle(10,10,5);
+				btnTrap.graphics.endFill();
+				//
+				btnSPoint.graphics.clear();
+				btnSPoint.graphics.beginFill(0x111111);
+				btnSPoint.graphics.drawCircle(10,10,1);
+				btnSPoint.graphics.endFill();
+				
+				btnCPoint.graphics.clear();
+				btnCPoint.graphics.beginFill(0x111111);
+				btnCPoint.graphics.drawCircle(10,10,3);
+				btnCPoint.graphics.endFill();
+
+				btnBPoint.graphics.clear();
+				btnBPoint.graphics.beginFill(0x111111);
+				btnBPoint.graphics.drawCircle(10,10,5);
+				btnBPoint.graphics.endFill();
+				
+				btnSLine.graphics.clear();
+				btnSLine.graphics.lineStyle(1, 0x111111, 1);
+				btnSLine.graphics.moveTo(2,2);
+				btnSLine.graphics.lineTo(28,18);
+				btnSLine.graphics.endFill();
+				
+				btnBLine.graphics.clear();
+				btnBLine.graphics.lineStyle(3, 0x111111, 1);
+				btnBLine.graphics.moveTo(2,2);
+				btnBLine.graphics.lineTo(28,18);
+				btnBLine.graphics.endFill();
+				
+				btnDShape.graphics.clear();
+				btnDShape.graphics.lineStyle(1, 0x111111, 1);
+				btnDShape.graphics.moveTo(20,2);
+				btnDShape.graphics.lineTo(38,10);
+				btnDShape.graphics.lineTo(20,18);
+				btnDShape.graphics.lineTo(2,10);
+				btnDShape.graphics.lineTo(20,2);
+				btnDShape.graphics.endFill();
+				
+				btnRShape.graphics.clear();
+				btnRShape.graphics.lineStyle(1, 0x111111, 1);
+				btnRShape.graphics.moveTo(2,2);
+				btnRShape.graphics.lineTo(36,2);
+				btnRShape.graphics.lineTo(36,16);
+				btnRShape.graphics.lineTo(2,16);
+				btnRShape.graphics.lineTo(2,2);
+				btnRShape.graphics.endFill();
+			}
+
+
+			protected function btn_clickHandler1(event:MouseEvent):void{
+				if(event.target==btnRoad){
+					_windowMap._loadOperate=CellType.ROAD;
+				}
+				else if(event.target==btnBarrier){
+					_windowMap._loadOperate=CellType.Barrier;
+				}
+				else if(event.target==btnMask){
+					_windowMap._loadOperate=CellType.Mask;
+				}
+				else if(event.target==btnTrap){
+					_windowMap._loadOperate=CellType.Trap;
+				}
+				else{
+					_windowMap._loadOperate="";
+				}
+			}
+			
+			protected function btn_clickHandler2(event:MouseEvent):void{
+				if(event.target==btnSPoint){
+					_windowMap._drawType=EditType.SPOINT;
+				}
+				else if(event.target==btnCPoint){
+					_windowMap._drawType=EditType.CPOINT;
+				}
+				else if(event.target==btnBPoint){
+					_windowMap._drawType=EditType.BPOINT;
+				}
+				else if(event.target==btnSLine){
+					_windowMap._drawType=EditType.SLINE;
+				}
+				else if(event.target==btnBLine){
+					_windowMap._drawType=EditType.BLINE;
+				}
+				else if(event.target==btnDShape){
+					_windowMap._drawType=EditType.DSHAPE;
+				}
+				else if(event.target==btnRShape){
+					_windowMap._drawType=EditType.RSHAPE;
+				}
+				else{
+					
+				}
+			}
+
+			public function get windowMap():WindowMap{
+				return _windowMap;
+			}
+
+			public function set windowMap(value:WindowMap):void{
+				_windowMap = value;
+			}
+
+
+			//事件保存地图
+			protected function btnSave_clickHandler(event:MouseEvent):void{
+				if(App.proCurrernt!=null && App.proCurrernt.MapCurrent!=null){
+					App.proCurrernt.MapCurrent.save();
+				}
+			}
+
+		]]>
+	</fx:Script>
+	<s:Button id="btnRoad" x="6" y="6" width="20" height="20"  skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler1(event)"/>
+	<s:Button id="btnBarrier" x="34" y="6" width="20" height="20"  skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler1(event)"/>
+	<s:Button id="btnMask" x="62" y="6" width="20" height="20"  skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler1(event)"/>
+	<s:Button id="btnTrap" x="87" y="6" width="20" height="20"  skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler1(event)"/>
+	<s:Button id="btnCancel" x="111" y="6" width="20" height="20"  skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler1(event)"/>
+	<s:Label x="0" y="31" backgroundColor="0x111111" height="3" width="348"/>
+	<s:Button id="btnSPoint" enabled="{_windowMap._loadOperate!=''}" x="6" y="41" width="20" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnCPoint" enabled="{_windowMap._loadOperate!=''}" x="34" y="41" width="20" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnBPoint" enabled="{_windowMap._loadOperate!=''}" x="63" y="41" width="20" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnSLine" enabled="{_windowMap._loadOperate!=''}" x="90" y="41" width="30" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnBLine" enabled="{_windowMap._loadOperate!=''}" x="126" y="41" width="30" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnDShape" enabled="{_windowMap._loadOperate!=''}" x="164" y="41" width="40" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Button id="btnRShape" enabled="{_windowMap._loadOperate!=''}" x="212" y="41" width="40" height="20" skinClass="frame.ViewWindow.MyButtonSkin" click="btn_clickHandler2(event)"/>
+	<s:Label x="150" y="10" width="27" text="{_windowMap._loadOperate.toString()}"/>
+	<s:Label x="204" y="10" text="{_windowMap._drawType.toString()}"/>
+	<s:Label x="0" y="66" backgroundColor="0x111111" height="3" width="348"/>
+	<s:Button x="6" y="75" label="保存地图" click="btnSave_clickHandler(event)"/>
+</control:GameMoveWindow>

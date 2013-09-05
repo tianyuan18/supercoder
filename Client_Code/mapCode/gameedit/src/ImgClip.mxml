@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="446" height="398" creationComplete="windowedapplication1_creationCompleteHandler(event)">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.graphics.codec.PNGEncoder;
+			private var _file:File;
+			private const _mapImageFilter:FileFilter = new FileFilter("Images(*.png)","*.png");//文件定义
+			private var bitmap:Bitmap=null;
+			private var bitmapData:BitmapData=null;
+			private var ppading:int=1;
+			private var beilv:Number=1;
+			private var fname:String;
+			protected function btnChoose_clickHandler(event:MouseEvent):void
+			{
+				_file.browseForOpen("选择九宫格背景图片文件",[_mapImageFilter]);
+			}
+			
+			//事件：背景图片选择完成
+			private function fileSelectHanlder(evet:Event):void{
+				txtMapBGPath.text = _file.nativePath;
+				var imgLoder:Loader=new Loader();
+				imgLoder.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete);
+				imgLoder.load(new URLRequest(_file.nativePath));
+			}
+			
+			private function onComplete(event:Event):void{
+				
+				var loaderinfo:LoaderInfo=event.target as  LoaderInfo;
+				
+				loaderinfo.removeEventListener(Event.COMPLETE,onComplete);
+				 
+				
+				if(bitmap!=null){
+					labelContainer.removeChild(bitmap);
+				}
+				bitmap=new Bitmap();
+				bitmapData=loaderinfo.content["bitmapData"] as BitmapData;
+				bitmap.bitmapData=bitmapData;
+				labelContainer.addChild(bitmap);
+				reSet();
+			}
+
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				_file = File.desktopDirectory;
+				_file.addEventListener(Event.SELECT,fileSelectHanlder);
+			}
+			
+			
+
+			protected function btnPSmall_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(bitmap!=null){
+					if(ppading>1){
+						ppading--;
+					}
+					reSet();
+				}
+			}
+			
+			protected function btnPBig_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(bitmap!=null){
+					if(ppading<bitmapData.width/2-1){
+						ppading++;
+					}
+					reSet();
+				}
+			}
+
+			protected function btnSmall_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(bitmap!=null){
+					if(beilv>1){
+						beilv/=2;
+					}
+					reSet();
+				}
+			}
+
+
+			protected function btnBig_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(bitmap!=null){
+					if(beilv<5){
+						beilv*=2;
+					}
+					reSet();
+				}
+			}
+			
+			private function reSet():void{
+				bitmap.width=bitmapData.width*beilv;
+				bitmap.height=bitmapData.height*beilv;;
+				labelContainer.x=this.width/2-bitmap.width/2;
+				labelContainer.y=this.height/2-bitmap.height/2;
+				
+				labelContainer2.x=this.width/2-bitmap.width/2;
+				labelContainer2.y=this.height/2-bitmap.height/2;
+				
+				labelContainer2.graphics.clear();
+				labelContainer2.graphics.lineStyle(1, 0xff0000, 1);
+				
+				labelContainer2.graphics.moveTo(-50,ppading*beilv);
+				labelContainer2.graphics.lineTo(bitmap.width+50,ppading*beilv);
+				
+				labelContainer2.graphics.moveTo(-50,bitmap.height-ppading*beilv);
+				labelContainer2.graphics.lineTo(bitmap.width+50,bitmap.height-ppading*beilv);
+				
+				labelContainer2.graphics.moveTo(ppading*beilv,-50);
+				labelContainer2.graphics.lineTo(ppading*beilv,bitmap.height+50);
+				
+				labelContainer2.graphics.moveTo(bitmap.width-ppading*beilv,-50);
+				labelContainer2.graphics.lineTo(bitmap.width-ppading*beilv,bitmap.height+50);
+				labelContainer2.graphics.endFill();
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				beilv=1;
+				reSet();
+				
+				var fileName:String=_file.name.replace("."+_file.extension,"");
+				var arrImage:Array=[
+					{name:fileName+"0"+"."+_file.extension,coordinate:[0,0],size:[ppading,ppading]},
+					{name:fileName+"1"+"."+_file.extension,coordinate:[bitmapData.width/2,0],size:[1,ppading]},
+					{name:fileName+"2"+"."+_file.extension,coordinate:[bitmapData.width-ppading,0],size:[ppading,ppading]},
+					{name:fileName+"3"+"."+_file.extension,coordinate:[0,bitmapData.height/2],size:[ppading,1]},
+					{name:fileName+"4"+"."+_file.extension,coordinate:[ppading,ppading],size:[bitmapData.width-2*ppading,bitmapData.height-2*ppading]},
+					{name:fileName+"5"+"."+_file.extension,coordinate:[bitmapData.width-ppading,bitmapData.height/2],size:[ppading,1]},
+					{name:fileName+"6"+"."+_file.extension,coordinate:[0,bitmap.height-ppading],size:[ppading,ppading]},
+					{name:fileName+"7"+"."+_file.extension,coordinate:[bitmapData.width/2,bitmap.height-ppading],size:[1,ppading]},
+					{name:fileName+"8"+"."+_file.extension,coordinate:[bitmapData.width-ppading,bitmap.height-ppading],size:[ppading,ppading]},
+				];
+				
+				
+				for(var i:int=0;i<arrImage.length;i++){
+					//小图片所在的矩形区域
+					var recs:Rectangle=new Rectangle(arrImage[i].coordinate[0],arrImage[i].coordinate[1],arrImage[i].size[0],arrImage[i].size[1]);
+					
+					//JPEG编码矩形区域的bytes数组 or PNGEncoder 品质100
+					//
+					var bytespixelsS:ByteArray=bitmapData.getPixels(recs)
+					var bytesS:ByteArray;
+					if(_file.extension=="jpg"){
+						var jpgEncoderS:JPEGEncoder=new JPEGEncoder(100);
+						bytesS=jpgEncoderS.encodeByteArray(bytespixelsS,arrImage[i].size[0],arrImage[i].size[1]);
+					}else {
+						var pngEncoder:PNGEncoder=new PNGEncoder();
+						bytesS=pngEncoder.encodeByteArray(bytespixelsS,arrImage[i].size[0],arrImage[i].size[1]);
+					}
+					//写入到本地文档HFMapEdit/文件夹中
+					var fsS:FileStream = new FileStream();
+					var fileS:File = new File(_file.parent.nativePath+"\\"+arrImage[i].name);
+					fsS.openAsync(fileS,FileMode.WRITE);
+					fsS.writeBytes(bytesS);
+					fsS.close();
+				}
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:VGroup width="100%">
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="选择背景：" height="21" paddingTop="5" width="72"/>
+			<mx:TextInput id="txtMapBGPath" width="227" enabled="false"/>
+			<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="Padding：" height="21" paddingTop="5" width="62"/>
+			<s:Button id="btnPSmall" label="&lt;" width="31" click="btnPSmall_clickHandler(event)"/>
+			<s:Button id="btnPBig" label="&gt;" width="30" click="btnPBig_clickHandler(event)"/>
+			<s:Label text="Size：" height="21" paddingTop="5" width="37"/>
+			<s:Button id="btnSmall" label="&lt;" width="31" click="btnSmall_clickHandler(event)"/>
+			<s:Button id="btnBig" label="&gt;" width="30" click="btnBig_clickHandler(event)"/>
+			<s:Button label="生成" click="button1_clickHandler(event)"/>
+			
+		</s:HGroup>
+		<s:Group width="100%" height="357">
+			<s:Label id="labelContainer">
+				
+			</s:Label>
+			<s:Label id="labelContainer2">
+				
+			</s:Label>
+		</s:Group>
+	</s:VGroup>
+</s:WindowedApplication>

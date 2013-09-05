@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="355" height="238"
+					   creationComplete="gamewindow1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import common.FileOperate;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.PNGEncoder;
+			import mx.utils.object_proxy;
+			
+			
+			private var config:Object={sourceList:[{name:"神魔遮天",roleCount:130,sitCount:60,weapenCount:130,hourseCount:60,isLeft:true}],
+				totelList:[{name:"御剑江湖",roleCount:129,sitCount:60,weapenCount:129,hourseCount:60,isLeft:false}]
+			};
+			private var _file:File;
+			private const _mapImageFilter:FileFilter = new FileFilter("Images(*.swf)","*.swf");//文件定义
+			
+			//人物
+			private var objRole:Object;
+			//骑坐
+			private var objSit:Object;
+			//武器
+			private var objWeapen:Object;
+			//坐骑
+			private var objHourse:Object;
+			
+			private var newPersonArray:Array=[
+				//攻击
+				37,38,39,40,41,42,43,//1-7
+				29,30,31,32,33,34,35,//8-14
+				21,22,23,24,25,26,27,//15-21
+				13,14,15,16,17,18,19,//22-28
+				5, 6, 7, 8, 9,10,11,//28-35
+				//站立
+				124,125,126,127,128,129,128,//36-42
+				118,119,120,121,122,123,122,//43-49
+				112,113,114,115,116,117,116,//50-56
+				106,106,107,108,109,110,109,//57-63
+				100,101,102,103,104,105,104,//64-70
+				//走路
+				94,95,96,97,98,99,98,//71-77
+				88,89,90,91,92,93,92,//78-84
+				82,83,84,85,86,87,86,//85-91
+				76,77,78,79,80,81,80,//92-98
+				70,71,72,73,74,75,74,//99-105
+				//死亡
+				66,66,67,67,68,68,69,69,//106-113
+				58,58,59,59,60,60,61,61,//114-121
+				50,50,51,51,52,52,53,53//122-129
+			];
+			
+			private var newSitArray:Array=[
+				
+				//跑动
+				24,25,26,27,28,29,//下
+				18,19,20,21,22,23,//左下
+				12,13,14,15,16,17,//左
+				6,7,8,9,10,11,//左上
+				0,1,2,3,4,5,//上
+				
+				//停止
+				54,55,56,57,58,59,//下
+				48,49,50,51,52,53,//左下
+				42,43,44,45,46,47,//左
+				36,37,38,39,40,41,//左上
+				30,31,32,33,34,35//上
+			];
+			
+			protected function gamewindow1_creationCompleteHandler(event:FlexEvent):void{
+				
+				var sourceArr:ArrayCollection=new ArrayCollection(config.sourceList);
+				listSource.labelField="name";
+				listSource.dataProvider=sourceArr;
+				listSource.selectedIndex=0;
+				
+				var totelArr:ArrayCollection=new ArrayCollection(config.totelList);
+				listTotel.labelField="name";
+				listTotel.dataProvider=totelArr;
+				listTotel.selectedIndex=0;
+				 
+				_file = new File("C:\\Documents and Settings\\kaitian\\桌面\\素材");
+				_file.addEventListener(Event.SELECT,fileSelectHanlder);
+			}
+			
+			//事件：点击文件选择按钮
+			protected function btnChoose_clickHandler(event:MouseEvent):void{
+				_file.browseForOpen("选择资源swf文件",[_mapImageFilter]);
+			}
+			//事件：点击文件选择按钮
+			protected function btnChooseP_clickHandler(event:MouseEvent):void{
+				var fileP:File= new File("C:\\Documents and Settings\\kaitian\\桌面\\素材");
+				fileP.addEventListener(Event.SELECT,function(evt:Event):void{
+					var loader:Loader=new Loader();
+					loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(cvt1:Event):void{
+						txtMapBGPathP.text = fileP.nativePath;
+						var mc:MovieClip=((cvt1.currentTarget as LoaderInfo).content) as MovieClip;
+						mc.gotoAndStop(1);
+						var rect:Rectangle 				  = mc.getBounds(mc);
+						txtPx.text=rect.x+rect.width+"";
+						txtPy.text=rect.y+rect.height+20+"";
+					});
+					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(evt1:IOErrorEvent):void{});
+					loader.load(new URLRequest(fileP.nativePath));
+				});
+				fileP.browseForOpen("选择偏移swf文件",[_mapImageFilter]);
+			}
+			
+			
+			//事件：文件选择完成
+			private function fileSelectHanlder(evet:Event):void{
+				txtMapBGPath.text = _file.nativePath;
+				chkRole.selected=false;
+				chkSit.selected=false;
+				chkWeapen.selected=false;
+				chkHourse.selected=false;
+				
+				chkRole.enabled=false;
+				chkSit.enabled=false;
+				chkWeapen.enabled=false;
+				chkHourse.enabled=false;
+				
+				objRole=null;
+				objHourse=null;
+				objSit=null;
+				objWeapen=null;
+				
+				//加载角色
+				var loader:Loader=new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(cvt1:Event):void{
+					var tmpClip:MovieClip=((cvt1.currentTarget as LoaderInfo).content) as MovieClip;
+					if(tmpClip.totalFrames==listSource.selectedItem.roleCount){
+						objRole=getData(tmpClip);
+						chkRole.selected=true;
+						chkRole.enabled=true;
+					}
+				});
+				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(evt1:IOErrorEvent):void{});
+				loader.load(new URLRequest(_file.nativePath));
+				
+				//加载角色骑坐
+				var loaderSit:Loader=new Loader();
+				loaderSit.contentLoaderInfo.addEventListener(Event.COMPLETE,function(cvt2:Event):void{
+					var tmpClip2:MovieClip=((cvt2.currentTarget as LoaderInfo).content) as MovieClip;
+					if(tmpClip2.totalFrames==listSource.selectedItem.sitCount){
+						objSit=getData(tmpClip2);
+						chkSit.selected=true;
+						chkSit.enabled=true;
+					}
+				});
+				loaderSit.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(evt2:IOErrorEvent):void{});
+				loaderSit.load(new URLRequest(_file.nativePath.replace(".swf","骑.swf")));
+				
+				//加载武器
+				var loaderWeapen:Loader=new Loader();
+				loaderWeapen.contentLoaderInfo.addEventListener(Event.COMPLETE,function(cvt3:Event):void{
+					var tmpClip3:MovieClip=((cvt3.currentTarget as LoaderInfo).content) as MovieClip;
+					if(tmpClip3.totalFrames==listSource.selectedItem.weapenCount){
+						objWeapen=getData(tmpClip3);
+						chkWeapen.selected=true;
+						chkWeapen.enabled=true;
+					}
+				});
+				loaderWeapen.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(evt3:IOErrorEvent):void{});
+				loaderWeapen.load(new URLRequest(_file.nativePath.replace("男.swf","武器.swf").replace("女.swf","武器.swf")));
+				
+				//加载坐骑
+				var loaderHourse:Loader=new Loader();
+				loaderHourse.contentLoaderInfo.addEventListener(Event.COMPLETE,function(cvt4:Event):void{
+					var tmpClip4:MovieClip=((cvt4.currentTarget as LoaderInfo).content) as MovieClip;
+					if(tmpClip4.totalFrames==listSource.selectedItem.hourseCount){
+						objHourse=getData(tmpClip4);
+						chkHourse.selected=false;
+						chkHourse.enabled=true;
+					}
+				});
+				loaderHourse.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(evt4:IOErrorEvent):void{});
+				loaderHourse.load(new URLRequest(_file.parent.nativePath+"\\坐骑.swf"));
+			}
+			
+			public function getData(mc:MovieClip):Object{
+				//bitmapData数组,4个偏移
+				var obj:Object={arr:[],tArr:[],minX:int.MAX_VALUE,minY:int.MAX_VALUE,maxX:0,maxY:0};
+				for(var i:int=1;i<= mc.totalFrames;i++){
+					mc.gotoAndStop(i);
+					var rect:Rectangle 				  = mc.getBounds(mc);
+					if(rect.x<obj.minX) obj.minX=rect.x;
+					if(rect.y<obj.minY) obj.minY=rect.y;
+					if((rect.x+rect.width)>obj.maxX) obj.maxX=(rect.x+rect.width);
+					if((rect.y+rect.height)>obj.maxY) obj.maxY=(rect.y+rect.height);
+					var bmpData:BitmapData=new BitmapData(rect.width, rect.height,true, 0);
+					bmpData.draw(mc, new Matrix(1, 0, 0, 1,-rect.x, -rect.y));
+					obj.arr.push({x:rect.x,y:rect.y,data:bmpData});
+					obj.tArr.push({});
+				}
+				return obj;
+			}
+			
+			public function getTransData(obj:Object,isHChange:Boolean,isVChange:Boolean=false):Object{
+				
+				//搜集图片
+				for(var i:int=0;i< obj.arr.length;i++){
+					var item:Object=obj.arr[i];
+					var w:int=item.data.width;
+					var h:int=item.data.height;
+					var x:int=0;
+					var y:int=0;
+					if(isHChange){
+						w+=obj.maxX-item.x-item.data.width;
+						x=obj.maxX-item.x;
+					}else{
+						w+=item.x-obj.minX;
+						x=item.x-obj.minX
+					}
+					 
+					if(isVChange){
+						h+=obj.maxY-item.y-item.data.height;
+						y=obj.maxY-item.y;
+					}else{
+						h+=item.y-obj.minY;
+						y=item.y-obj.minY;
+					}
+					
+					var bitmap:Bitmap=new Bitmap(item.data);
+					var bmpData:BitmapData=new BitmapData(w,h,true, 0);
+					bmpData.draw(bitmap,new Matrix(isHChange?-1:1, 0, 0, isVChange?-1:1,x,y));
+					obj.tArr[i]={data:bmpData,x:obj.arr[i].x-x,y:obj.arr[i].y-y};
+				}
+				return obj;
+			}
+			
+			public function saveData():void{
+				var fileName:String=(new File(_file.nativePath).parent).nativePath+"\\";
+				var menpai:String=_file.name.replace("男.swf","").replace("女.swf","");
+				var sex:String=_file.name.replace(".swf","").replace(menpai,"");
+				var arr:Array=[{name:menpai+"\\"+sex,obj:objRole,startIndex:0},{name:menpai+"\\"+sex,obj:objSit,startIndex:129},{name:menpai+"\\武器",obj:objWeapen,startIndex:0},{name:"坐骑",obj:objHourse,startIndex:0}];
+				for(var i:int=0;i<arr.length;i++){
+					if(arr[i].obj!=null){
+						for(var j:int=0;j<arr[i].obj.tArr.length;j++){
+							var item:Object=arr[i].obj.tArr[j];
+							var saveFile:File;
+							saveFile=new File(fileName+arr[i].name+"\\"+(arr[i].startIndex+j+1)+".png");
+							var data:BitmapData=item.data ;
+							//小图片所在的矩形区域
+							var recs:Rectangle=new Rectangle(0,0,data.width,data.height);
+							
+							//JPEG编码矩形区域的bytes数组 or PNGEncoder 品质100
+							var pngEncoder:PNGEncoder=new PNGEncoder();
+							var bytespixelsS:ByteArray=data.getPixels(recs)
+							var bytesS:ByteArray=pngEncoder.encodeByteArray(bytespixelsS,data.width,data.height);
+							
+							//写入到本地文档HFMapEdit/文件夹中
+							var fsS:FileStream = new FileStream();
+							fsS.openAsync(saveFile,FileMode.WRITE);
+							fsS.writeBytes(bytesS);
+						}
+					}
+				}
+			}
+			
+			protected function btnOK_clickHandler(event:MouseEvent):void{
+			
+				var isLeftChange:Boolean=listSource.selectedItem.isLeft!=listTotel.selectedItem.isLeft;
+				var isTopChange:Boolean=false;
+				var i:int;
+				if(chkRole.selected && objRole!=null){
+					
+					getTransData(objRole,isLeftChange);
+					//确定偏移
+					var roleItem:Object=objRole.tArr[124];//站立第一帧
+					var roleNewX:int=int(txtPx.text)-roleItem.data.width;
+					var roleNewY:int=int(txtPy.text)-roleItem.data.height;
+					var xyOut:String="角色\r\nx:"+roleNewX+";y:"+roleNewY+"\r\n";
+					xx.addChild(new Bitmap(roleItem.data));
+					
+					if(chkSit.selected && objSit!=null){
+						getTransData(objSit,isLeftChange);
+						 
+						var sitNewX:int=0;
+						var sitNewY:int=0; 
+						if(isLeftChange){
+							//左右交换：交换前的左边界相减等于交换后的右边界相减
+							sitNewX=objRole.arr[124].x-objSit.arr[25].x-objSit.tArr[25].data.width+roleNewX+objRole.tArr[124].data.width;
+						}else{
+							//以右边界为校准点
+							var tmp1:int=objSit.arr[25].x+objSit.arr[25].data.width-objRole.arr[124].x-objRole.arr[124].data.width;
+							sitNewX=tmp1-objSit.tArr[25].data.width+roleNewX+objRole.tArr[124].data.width;
+						}
+						
+						if(isTopChange){
+							//上下交换
+							sitNewY=objRole.arr[124].y-objSit.arr[25].y-objSit.tArr[25].data.height+roleNewY+objRole.tArr[124].data.height;
+						}else{
+							var tmpY:int=objSit.arr[25].y+objSit.arr[25].data.height-objRole.arr[124].y-objRole.arr[124].data.height;
+							sitNewY=tmpY-objSit.tArr[25].data.height+roleNewY+objRole.tArr[124].data.height;
+						}
+						
+						xyOut+="骑\r\nx:"+sitNewX+";y:"+(sitNewY+80)+"\r\n";
+						
+						
+						var tmpSitArray:Array=[];
+						for(i=0;i<newSitArray.length;i++){
+							tmpSitArray.push(objSit.tArr[newSitArray[i]]);
+						}
+						objSit.tArr=tmpSitArray;
+					}
+					
+					if(chkWeapen.selected && objWeapen!=null){
+						getTransData(objWeapen,isLeftChange);
+						var weapenNewX:int=0;
+						var weapenNewY:int=0; 
+						if(isLeftChange){
+							//左右交换：交换前的左边界相减等于交换后的右边界相减
+							weapenNewX=objRole.arr[124].x-objWeapen.arr[124].x-objWeapen.tArr[124].data.width+roleNewX+objRole.tArr[124].data.width;
+						}else{
+							//以右边界为校准点
+							var tmp:int=objWeapen.arr[124].x+objWeapen.arr[124].data.width-objRole.arr[124].x-objRole.arr[124].data.width;
+							weapenNewX=tmp-objWeapen.tArr[124].data.width+roleNewX+objRole.tArr[124].data.width;
+						}
+						
+						if(isTopChange){
+							//上下交换
+							weapenNewY=objRole.arr[124].y-objWeapen.arr[124].y-objWeapen.tArr[124].data.height+roleNewY+objRole.tArr[124].data.height;
+						}else{
+							var tmpY1:int=objWeapen.arr[124].y+objWeapen.arr[124].data.height-objRole.arr[124].y-objRole.arr[124].data.height;
+							weapenNewY=tmpY1-objWeapen.tArr[124].data.height+roleNewY+objRole.tArr[124].data.height;
+						}
+						
+						xyOut+="武器\r\nx:"+weapenNewX+";y:"+weapenNewY+"\r\n";
+						
+						
+						var tmpWeapenArr:Array=[];
+						for(i=0;i<newPersonArray.length;i++){
+							tmpWeapenArr.push(objWeapen.tArr[newPersonArray[i]]);
+						}
+						objWeapen.tArr=tmpWeapenArr;
+					}
+					
+					if(chkHourse.selected && objHourse!=null){
+						getTransData(objHourse,isLeftChange);
+						
+						var hourseNewX:int=0;
+						var hourseNewY:int=0; 
+						if(isLeftChange){
+							//左右交换：交换前的左边界相减等于交换后的右边界相减
+							hourseNewX=objRole.arr[124].x-objHourse.arr[25].x-objHourse.tArr[25].data.width+roleNewX+objRole.tArr[124].data.width;
+						}else{
+							//以右边界为校准点
+							var tmp2:int=objHourse.arr[25].x+objHourse.arr[25].data.width-objRole.arr[124].x-objRole.arr[124].data.width;
+							hourseNewX=tmp2-objHourse.tArr[25].data.width+roleNewX+objRole.tArr[124].data.width;
+						}
+						
+						if(isTopChange){
+							//上下交换
+							hourseNewY=objRole.arr[124].y-objHourse.arr[25].y-objHourse.tArr[25].data.height+roleNewY+objRole.tArr[124].data.height;
+						}else{
+							var tmpY2:int=objHourse.arr[25].y+objHourse.arr[25].data.height-objRole.arr[124].y-objRole.arr[124].data.height;
+							hourseNewY=tmpY2-objHourse.tArr[25].data.height+roleNewY+objRole.tArr[124].data.height;
+						}
+						
+						xyOut+="坐骑\r\nx:"+hourseNewX+";y:"+(hourseNewY+80)+"\r\n";
+						
+						
+						var tmphourseArray:Array=[];
+						for(i=0;i<newSitArray.length;i++){
+							tmphourseArray.push(objHourse.tArr[newSitArray[i]]);
+						}
+						objHourse.tArr=tmphourseArray;
+					}
+					 
+					var tmpRoleArr:Array=[];
+					for(i=0;i<newPersonArray.length;i++){
+						tmpRoleArr.push(objRole.tArr[newPersonArray[i]]);
+					}
+					objRole.tArr=tmpRoleArr;
+					
+					saveData();
+					
+					var fileName:String=(new File(_file.nativePath).parent).nativePath+"\\";
+					common.FileOperate.saveFile(fileName+_file.name.replace(".swf","")+"坐标.txt",xyOut);
+					Alert.show("提取完毕");
+					
+				}
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup x="0" y="0" width="100%" height="100%">
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label id="xx0" text="素材来源：" height="21" paddingTop="5" width="72"/>
+			<s:DropDownList id="listSource" width="162">
+				
+			</s:DropDownList>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label id="xx1" text="转换目标：" height="21" paddingTop="5" width="72"/>
+			<s:DropDownList id="listTotel" width="162">
+				
+			</s:DropDownList>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label id="xx2" text="偏移文件：" height="21" paddingTop="5" width="72"/>
+			<mx:TextInput id="txtMapBGPathP" width="227" enabled="false"/>
+			<s:Button label="..." width="30" click="btnChooseP_clickHandler(event)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="右下偏移：" height="21" paddingTop="5" width="72"/>
+			<s:Label text="x:" height="21" paddingTop="5" width="20"/>
+			<mx:TextInput id="txtPx" width="46" enabled="true" text="450"/>
+			<s:Label text="y:" height="21" paddingTop="5" width="20"/>
+			<mx:TextInput id="txtPy" width="46" enabled="true" text="450"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label id="xx" text="文件路径：" height="21" paddingTop="5" width="72"/>
+			<mx:TextInput id="txtMapBGPath" width="227" enabled="false"/>
+			<s:Button label="..." width="30" click="btnChoose_clickHandler(event)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="资源状态：" height="21" paddingTop="5" width="60"/>
+			<s:CheckBox id="chkRole" label="角色" enabled="false"/>
+			<s:CheckBox id="chkSit" label="角色骑坐"  enabled="false"/>
+			<s:CheckBox id="chkWeapen" label="武器"  enabled="false"/>
+			<s:CheckBox id="chkHourse" label="坐骑"  enabled="false"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+			<s:Button label="提取"  click="btnOK_clickHandler(event)"/>
+			<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+		</s:HGroup>
+		
+	</s:VGroup>
+</s:WindowedApplication>

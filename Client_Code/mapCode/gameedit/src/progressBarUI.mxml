@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx"
+						xmlns:control="control.*" layout="absolute"
+						title="" alpha="0.8"
+						 width="309" height="88">
+	<fx:Script>
+		<![CDATA[
+			//进度条信息
+			private static var _progressInfo:progressBarUI;
+			
+			public static function open():progressBarUI{
+				
+				if(_progressInfo==null){
+					_progressInfo=new progressBarUI();
+				}else if(_progressInfo.parent!=null){
+					_progressInfo.show();
+				}
+				return _progressInfo;
+			}
+			
+			public function runit(j:int):void
+			{
+				/**
+				 * 传入0-100的数值来设置进度条的进度
+				 */
+				if(j<=100)
+				{
+					bar.setProgress(j,100);
+					bar.label= "CurrentProgress" + " " + j + "%";
+					j+=10;
+				}
+				if(j>100)
+				{
+					bar.setProgress(100,100);
+					bar.label= "CurrentProgress" + " " + 100 + "%";
+				}
+			}
+		]]>
+	</fx:Script>
+	<mx:ProgressBar id="bar" labelPlacement="center"
+					minimum="0" visible="true" maximum="100" label="CurrentProgress 0%"
+					direction="right" mode="manual" width="277" x="15" y="10"/>
+	
+</control:GameMoveWindow>

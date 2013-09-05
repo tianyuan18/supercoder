@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator
+END
+StudentApplyListMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/StudentApplyListMediator.as
+END
+MasterAwardMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/MasterAwardMediator.as
+END
+MasterMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/MasterMediator.as
+END
+MasStuMainMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/MasStuMainMediator.as
+END
+StudentListMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/StudentListMediator.as
+END
+GraduateStudentMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/GraduateStudentMediator.as
+END
+MasterAndStudentMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/MasterAndStudentMediator.as
+END
+BetrayMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Master/Mediator/BetrayMediator.as
+END

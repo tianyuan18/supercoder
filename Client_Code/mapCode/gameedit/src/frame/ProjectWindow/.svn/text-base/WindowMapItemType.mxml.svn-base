@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<c:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:c="control.*" title="元素类型查看"  alphaEnable="false"
+				  width="400" height="412" creationComplete="gamemovewindow1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import common.App;
+			import common.MapUtils;
+			import common.STDispatcher;
+			
+			import control.BaseAnimeObject;
+			import control.ImgBmpDataCollection;
+			import control.SwfBmpDataCollection;
+			
+			import model.STEvent;
+			
+			import modelBase.MapItem;
+			import modelBase.MapItemType;
+			
+			import modelExtend.GameFullExtend;
+			import modelExtend.MapExtend;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private static var _windowNpcRole:WindowMapItemType;
+			
+			public static function open():WindowMapItemType{
+				if(_windowNpcRole!=null && _windowNpcRole.parent!=null){
+					_windowNpcRole.show();
+				}
+				else{
+					_windowNpcRole=new WindowMapItemType();
+				}
+				return _windowNpcRole;
+			}
+			
+			
+			private var _project:GameFullExtend;
+			[Bindable] 
+			private var _mapItemType:MapItemType;
+			
+			private var viewImg:Bitmap=new Bitmap();
+			private var iconImg:Bitmap=new Bitmap();
+			private var iconCImg:Bitmap=new Bitmap();
+			
+			protected function gamemovewindow1_creationCompleteHandler(event:FlexEvent):void{
+				labelContainer.addChild(viewImg);
+				labelContainer.addChild(iconImg);
+				labelContainer.addChild(iconCImg);
+			}
+			//显示gameItem，gameItem三个图标的坐标位置：viewImg__142__-21；iconImg__100__2；iconCImg__120__5
+			public override function show():void{
+				if(App.proCurrernt!=null && App.proCurrernt.mapItemTypeCurrent!=null){
+					
+					_project=App.proCurrernt;
+					_mapItemType=App.proCurrernt.mapItemTypeCurrent ;
+					txtID.text=_mapItemType.iD.toString();
+					txtName.text=_mapItemType.name;
+					txtNpcName.text=_mapItemType.name;
+					txtContent.text="你好，我叫"+_mapItemType.name;
+					txtTarget.text=MapUtils.addTarget(_mapItemType.targett);
+					{
+						var loader1:Loader=new Loader();
+						loader1.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt1:Event):void{
+							viewImg.bitmapData=((evt1.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+							viewImg.x=170-(viewImg.width/2);
+							viewImg.y=2-viewImg.height;
+						});
+						loader1.load(new URLRequest(App.proCurrernt.pathRoot+"images\\mapItemType\\"+_mapItemType.iD+".png"));
+					}
+					{
+						var loader2:Loader=new Loader();
+						loader2.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt2:Event):void{
+							iconImg.bitmapData=((evt2.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+							iconImg.x=100;
+							iconImg.y=2;
+						});
+						loader2.load(new URLRequest(App.proCurrernt.pathRoot+"images\\mapItemType\\"+_mapItemType.iD+"icon.png"));
+					}
+					{
+						var loader3:Loader=new Loader();
+						loader3.contentLoaderInfo.addEventListener(Event.COMPLETE,function(evt3:Event):void{
+							iconCImg.bitmapData=((evt3.currentTarget as LoaderInfo).content as Bitmap).bitmapData;
+							iconCImg.x=220;
+							iconCImg.y=5;
+						});
+						loader3.load(new URLRequest(App.proCurrernt.pathRoot+"images\\mapItemType\\"+_mapItemType.iD+"iconChild.png"));
+					}
+					
+					super.show();
+				}
+			}
+
+			/* 点击创建地图元素按钮 */
+			protected function button1_clickHandler(evt:MouseEvent):void
+			{
+				if(_project!=null && _project.MapCurrent!=null){
+					
+					var roleInfo:MapItem= new MapItem();
+					roleInfo.mapID=_project.MapCurrent.iD;
+					roleInfo.dataInit(MapItem.newIndex,_project.MapCurrent.iD,_mapItemType.iD,txtNpcName.text,txtContent.text,evt.localX+this.x+10,evt.localY+this.y+370);
+					roleInfo.type=_mapItemType.type;
+					if(roleInfo.type == "MapEffect")
+					{
+						roleInfo.width=_mapItemType.width;
+						roleInfo.height=_mapItemType.height;
+					}
+					STDispatcher.sendEvent(STEvent.MAP_ITEMTYPE_CREATE_START,roleInfo);
+					
+					this.hide();
+				
+				}else{
+					
+					Alert.show("当前没有地图打开","提示");
+				} 
+					
+			}
+
+		]]>
+	</fx:Script>
+	<s:Group width="100%" height="16" id="RRRR">
+		<s:Label  id="labelHeadImg" left="185" top="-42"/>
+	</s:Group>
+	<s:Group width="100%" height="123">
+		<s:Label x="183" y="93" id="labelContainer"/>
+	</s:Group>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="序号：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtID" width="262" editable="false"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="名称：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtName" width="262" editable="false"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="标签：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtTarget" width="262" editable="false"/>
+	</s:HGroup>
+	<s:Label width="100%" height="18" backgroundColor="#E0DFDF" text="新元素信息" paddingLeft="10" paddingTop="3"/>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="元素名称：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtNpcName" width="265"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Label text="默认介绍：" height="21" paddingTop="5" width="72"/>
+		<mx:TextInput id="txtContent" width="265"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		<s:Button label="创建到当前地图" click="button1_clickHandler(event)"/>
+	</s:HGroup>
+</c:GameMoveWindow>

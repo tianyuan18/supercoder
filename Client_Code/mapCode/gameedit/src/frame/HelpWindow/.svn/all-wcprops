@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/frame/HelpWindow
+END
+说明.txt
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/frame/HelpWindow/%E8%AF%B4%E6%98%8E.txt
+END
+WindowUpdate.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/frame/HelpWindow/WindowUpdate.mxml
+END
+WindowHelp.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/frame/HelpWindow/WindowHelp.mxml
+END
+WindowAbout.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/4/mapCode/gameedit/src/frame/HelpWindow/WindowAbout.mxml
+END

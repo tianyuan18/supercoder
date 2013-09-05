@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Client_Code/!svn/ver/1597/Game/GameUI/Modules/Task/Commamd
+END
+TaskCommandList.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/903/Game/GameUI/Modules/Task/Commamd/TaskCommandList.as
+END
+UpdateMaskCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/Commamd/UpdateMaskCommand.as
+END
+TaskCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Client_Code/!svn/ver/585/Game/GameUI/Modules/Task/Commamd/TaskCommand.as
+END
+TreeEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/Commamd/TreeEvent.as
+END
+MoveToCommon.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Client_Code/!svn/ver/1597/Game/GameUI/Modules/Task/Commamd/MoveToCommon.as
+END
+RecallTaskCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1397/Game/GameUI/Modules/Task/Commamd/RecallTaskCommand.as
+END
+ReceiveTaskCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1574/Game/GameUI/Modules/Task/Commamd/ReceiveTaskCommand.as
+END
+UpdateTaskProcess.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1302/Game/GameUI/Modules/Task/Commamd/UpdateTaskProcess.as
+END
+TaskSpecificCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1213/Game/GameUI/Modules/Task/Commamd/TaskSpecificCommand.as
+END
+TaskSeverMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/240/Game/GameUI/Modules/Task/Commamd/TaskSeverMediator.as
+END
+UpdateLevelTaskCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Task/Commamd/UpdateLevelTaskCommand.as
+END

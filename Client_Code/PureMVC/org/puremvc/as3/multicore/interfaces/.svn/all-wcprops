@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces
+END
+IMediator.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IMediator.as
+END
+INotification.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/INotification.as
+END
+IObserver.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IObserver.as
+END
+IView.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IView.as
+END
+ICommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/ICommand.as
+END
+INotifier.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/INotifier.as
+END
+IModel.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IModel.as
+END
+IProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IProxy.as
+END
+IController.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IController.as
+END
+IFacade.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/PureMVC/org/puremvc/as3/multicore/interfaces/IFacade.as
+END

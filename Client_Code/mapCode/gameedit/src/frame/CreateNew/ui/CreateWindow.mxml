@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:GameMoveWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:control="control.*" layout="absolute" width="400" height="300">
+	
+	<fx:Script>
+		<![CDATA[
+			protected function btnOK_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+
+	</fx:Declarations>
+	<s:VGroup width="100%" height="100%">
+		<s:HGroup width="100%" height="24"/>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="窗口标题：" height="21" paddingTop="5" width="70"/>
+			<mx:TextInput id="txtWindowTitle" width="227"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="关闭坐标：" height="21" paddingTop="5" width="70"/>
+			<mx:TextInput id="txtCloseX" width="100"/>
+			<mx:TextInput id="txtCloseY" width="100"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+			<s:Label text="窗口样式：" height="21" paddingTop="5" width="70"/>
+			<mx:TextInput id="txtWindowStyle" width="227"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="10" paddingTop="1">
+		</s:HGroup>
+		<s:HGroup width="100%" height="24" paddingLeft="100" paddingTop="1">
+			<s:Button label="确定"  click="btnOK_clickHandler(event)"/>
+			<s:Button label="取消" click="btnCancel_clickHandler(event)"/>
+		</s:HGroup>
+	</s:VGroup>
+</control:GameMoveWindow>

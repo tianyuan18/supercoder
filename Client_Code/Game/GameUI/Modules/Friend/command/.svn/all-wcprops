@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Client_Code/!svn/ver/241/Game/GameUI/Modules/Friend/command
+END
+FriendActionList.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/command/FriendActionList.as
+END
+FriendCommandList.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/command/FriendCommandList.as
+END
+MenuEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/command/MenuEvent.as
+END
+ReceiveMsgCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Client_Code/!svn/ver/1/Game/GameUI/Modules/Friend/command/ReceiveMsgCommand.as
+END
+SelectElementCommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Client_Code/!svn/ver/241/Game/GameUI/Modules/Friend/command/SelectElementCommand.as
+END

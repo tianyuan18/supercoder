@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:assql="com.maclema.mysql.mxml.*"    
+					   width="879" height="356">
+    <fx:Declarations>
+		<assql:MySqlService id="service"
+							hostname="localhost" 
+							username="root"
+							password="12345"
+							database="acc_db"
+							autoConnect="true"
+							port="3306"
+							connect="handleConnected(event)" 
+							sqlError="handleError(event)" />
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import com.maclema.mysql.events.MySqlErrorEvent;
+			import com.maclema.util.ResultsUtil;
+			
+			private function handleConnected(e:Event):void {
+				Alert.show("连接成功")
+				service.send("SELECT * FROM account");
+			}
+			
+			private function handleError(e:MySqlErrorEvent):void {
+				Alert.show(e.text);
+			}
+		]]>
+	</fx:Script>
+	
+	
+	
+	<mx:DataGrid id="grid" left="10" right="10" top="10" bottom="10"
+				 dataProvider="{service.lastResult}"
+				 columns="{ResultsUtil.getDataGridColumns(service.lastResultSet)}" />
+	
+</s:WindowedApplication>
